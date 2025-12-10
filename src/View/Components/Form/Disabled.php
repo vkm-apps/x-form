@@ -1,11 +1,10 @@
 <?php
 
-namespace Vmphobos\XForm\View\Components\Form;
+namespace VkmApps\XForm\View\Components\Form;
 
 use Closure;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
-use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\View;
 
 class Disabled extends Component

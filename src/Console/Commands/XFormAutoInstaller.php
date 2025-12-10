@@ -1,6 +1,6 @@
 <?php
 
-namespace Vmphobos\XForm\Console\Commands;
+namespace VkmApps\XForm\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -11,12 +11,12 @@ class XFormAutoInstaller extends Command
 
     protected $description = 'X-Form Blade Components';
 
-    public function handle()
+    public function handle(): void
     {
         $this->info('Publishing X-Form Configuration...');
 
         Artisan::call('vendor:publish --tag=x-form:config');
-        Artisan::call('vendor:publish --tag=Vmphobos\XForm\ServiceProvider');
+        Artisan::call('vendor:publish --tag=VkmApps\XForm\ServiceProvider');
 
         $this->info('Successfully installed!');
     }

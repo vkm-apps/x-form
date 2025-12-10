@@ -1,5 +1,5 @@
 {
-    "name": "vmphobos/x-form",
+    "name": "vkm-apps/x-form",
     "description": "Reusable Laravel Form Components for Livewire and standard Blade.",
     "type": "library",
     "license": "MIT",
@@ -11,13 +11,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "Vmphobos\\XForm\\": "src/"
+            "VkmApps\\XForm\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Vmphobos\\XForm\\XFormServiceProvider"
+                "VkmApps\\XForm\\XFormServiceProvider"
             ]
         }
     },

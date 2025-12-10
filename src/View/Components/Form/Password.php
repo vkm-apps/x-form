@@ -1,5 +1,5 @@
 <?php
-namespace Vmphobos\XForm\View\Components\Form;
+namespace VkmApps\XForm\View\Components\Form;
 
 use Closure;
 use Illuminate\Contracts\View\View;

@@ -1,4 +1,5 @@
-<div x-data="{
+<div
+    x-data="{
     isDragging: false,
     files: [],
     handleDrop(event) {
@@ -11,7 +12,8 @@
     handleFileChange(event) {
         this.files = Array.from(event.target.files);
     }
-}">
+}"
+>
     @if($dropzone)
         <div class="flex items-center justify-center w-full">
             <label
@@ -40,26 +42,22 @@
                     </template>
                     <p class="text-xs {{ config('x-form.upload.dropzone.subtitle') }}">{{ $help }}</p>
                 </div>
-                @elseif($icon || $svg)
-                    <button type="button" class="px-3 py-2 bg-gray-200 rounded-md flex items-center gap-2 hover:cursor-pointer hover:opacity-80" x-on:click="$refs.file.click()" aria-label="{{ __('Upload Photo') }}">
-                        @if ($icon)
-                            <i class="{{ $icon }}"></i>
-                        @else
-                            {!! $svg !!}
-                        @endif
+                @elseif($button)
+                    @if($label)
+                        <span class="{{ config('x-form.label') }}">{!! $label !!}</span>
+                    @endif
 
-                        {{ $label ?? null }}
+                    <button
+                        type="button"
+                        {{ $attributes->merge([
+                                'class' => 'px-3 py-2 bg-zinc-200 dark:bg-zinc-900 rounded-md flex items-center gap-2 hover:cursor-pointer hover:opacity-80'
+                            ])
+                        }}
+                        x-on:click="$refs.file.click()"
+                        aria-label="{{ __('Choose File') }}"
+                    >
+                        {{ $button }}
                     </button>
-                @elseif($label)
-                    <x-form.label
-                        :for="$uuid"
-                        :label="$label"
-                        :model="$model"
-                        :modifier="$attributes->has('live') || $attributes->has('blur')"
-                        :tooltip="$tooltip"
-                        :help="$help"
-                        :required="$required"
-                    />
                 @else
                     {{ $slot }}
                 @endif
@@ -70,17 +68,16 @@
                     type="file"
                     {{
                         $attributes
-                        ->class([
-                            config('x-form.upload.button') => !$dropzone && !$icon,
-                            'hidden' => $dropzone || $icon || $svg
+                            ->class([
+                                config('x-form.upload.button') => !$dropzone && !$button,
+                                'hidden' => $dropzone || $button
                             ])
-                        ->merge([
-                            'id' => $uuid,
-                            'name' => $name,
-                            'wire:model' . $modifier => $model,
-                            'wire:key' => $uuid,
-                        ])
-
+                            ->merge([
+                                'id' => $uuid,
+                                'name' => $name,
+                                'wire:model' . $modifier => $model,
+                                'wire:key' => $uuid,
+                            ])
                     }}
 
                     @if($tooltip && !$label)

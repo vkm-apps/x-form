@@ -141,7 +141,7 @@
         <div
             x-show="open"
             x-anchor="$refs.calendar"
-            class="absolute z-10 mt-2 flex flex-col gap-2 w-72 h-76 rounded-lg backdrop-blur-xl dark:text-white shadow-xl"
+            class="absolute z-10 mt-2 flex flex-col gap-2 w-72 min-h-76 rounded-lg backdrop-blur-xl dark:text-white shadow-xl"
             @click.away="open = false; console.log(date)"
             x-cloak
         >

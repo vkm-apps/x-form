@@ -1,6 +1,6 @@
 <?php
 
-namespace Vmphobos\XForm\View\Components\Form;
+namespace VkmApps\XForm\View\Components\Form;
 
 use Closure;
 use Illuminate\View\Component;
@@ -12,10 +12,10 @@ class Label extends Component
      * @param  string|null  $for  The id the label is for
      * @param  string|null  $label  The label text (can contain HTML)
      * @param  string|null  $model  Livewire model target
-     * @param  string|null  $modifier  Livewire modifier like '.lazy', '.debounce'
      * @param  string|null  $icon  Icon CSS classes to show beside label
      * @param  string|null  $help  Help text for popover
      * @param  string|null  $tooltip  Tooltip text
+     * @param  bool|null  $modifier  Livewire modifier like '.lazy', '.debounce'
      * @param  bool  $required  Whether the label marks a required field
      */
     public function __construct(

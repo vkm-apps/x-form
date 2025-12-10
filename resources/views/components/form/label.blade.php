@@ -5,6 +5,7 @@
     @endif
     {{
         $attributes->class([
+            'flex items-center space-x-1',
             config('x-form.label'),
             config('x-form.required') => $required,
         ])
@@ -13,7 +14,7 @@
     {{-- Label icon --}}
     @if($icon)
         <i
-            class="{{ $icon }}"
+            class="{{ $icon }} inline-block"
             aria-hidden="true"
             @if($modifier && $model) wire:loading.remove wire:target="{{ $model }}" @endif
         ></i>
@@ -32,35 +33,35 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="inline size-4 lucide lucide-loader-circle-icon lucide-loader-circle animate-spin"
+            class="inline-block size-4 lucide lucide-loader-circle-icon animate-spin"
         >
             <path d="M21 12a9 9 0 1 1-6.219-8.56" />
         </svg>
     @endif
-    
+
+    {{-- Label text --}}
     {!! $label !!}
-</label>
 
-{{-- Tooltip icon --}}
-@if($tooltip && !$help)
-    <span
-        x-tooltip="{{ str($tooltip)->ucfirst() }}"
-        role="tooltip"
-        tabindex="0"
-    >{!! config('x-form.icons.info') !!}</span>
-@endif
+    {{-- Tooltip icon --}}
+    @if($tooltip && !$help)
+        <span
+            class="flex items-center ml-1"
+            x-tooltip="{{ str($tooltip)->ucfirst() }}"
+            role="tooltip"
+            tabindex="0"
+        >{!! config('x-form.icons.info') !!}</span>
+    @endif
 
-{{-- Help popover --}}
-@if($help && !$tooltip)
-    <div x-popover class="inline">
-        {!! config('x-form.icons.info') !!}
+    {{-- Help popover --}}
+    @if($help && !$tooltip)
+        <div x-popover.top class="flex items-center ml-1">
+            <button type="button" data-trigger>
+                {!! config('x-form.icons.info') !!}
+            </button>
 
-        <div class="popover" data-popover role="dialog" aria-modal="true">
-            <div class="row p-2 max-w-[450px]">
-                <div class="col-12">
-                    <small>{!! $help !!}</small>
-                </div>
+            <div class="popover p-2" data-popover role="dialog" aria-modal="true">
+                {!! $help !!}
             </div>
         </div>
-    </div>
-@endif
+    @endif
+</label>

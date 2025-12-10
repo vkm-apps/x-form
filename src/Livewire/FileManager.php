@@ -1,6 +1,6 @@
 <?php
 
-namespace Vmphobos\XForm\Livewire;
+namespace VkmApps\XForm\Livewire;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;

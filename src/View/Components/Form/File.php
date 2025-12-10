@@ -1,6 +1,6 @@
 <?php
 
-namespace Vmphobos\XForm\View\Components\Form;
+namespace VkmApps\XForm\View\Components\Form;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -11,8 +11,7 @@ class File extends FormElement
         public ?string $uuid = null,
         public ?string $name = null,
         public ?string $label = null,
-        public ?string $icon = null,
-        public ?string $svg = null,
+        public ?string $button = null,
         public ?string $model = null,
         public ?string $modifier = null,
         public ?string $multiple = null,

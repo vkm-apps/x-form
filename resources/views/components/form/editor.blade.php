@@ -538,21 +538,11 @@
                        <label class="{{ config('x-form.label') }}">Custom Styles:</label>
                        <input type="text" x-model="modules.video.customStyles" class="{{ config('x-form.input') }}">
                    </div>
-
-                    <div class="flex items-center mb-2">
-                        <input type="checkbox" id="fullWidth" x-model="fullWidth" class="mr-2">
-                        <label for="fullWidth">Full Width</label>
-                    </div>
-
-                    <div class="flex items-center mb-4">
-                        <input type="checkbox" id="responsive" x-model="responsive" class="mr-2">
-                        <label for="responsive">Responsive (16:9)</label>
-                    </div>
                 </div>
 
-                <div class="flex justify-end">
-                    <button type="button" @click="modules.video.showModal = false" class="px-4 py-2 mr-2 bg-gray-300 rounded">Cancel</button>
-                    <button type="button" @click="modules.video.add()" class="px-4 py-2 bg-blue-500 text-white rounded">Insert</button>
+                <div class="flex justify-end mt-4">
+                    <button type="button" @click="modules.video.showModal = false" class="px-4 py-2 mr-2 bg-gray-300 rounded">{{ __('Cancel') }}</button>
+                    <button type="button" @click="modules.video.add()" class="px-4 py-2 bg-blue-500 text-white rounded">{{ __('Insert') }}</button>
                 </div>
             </div>
         </div>

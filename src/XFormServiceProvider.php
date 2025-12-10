@@ -1,23 +1,23 @@
 <?php
 
-namespace Vmphobos\XForm;
+namespace VkmApps\XForm;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Vmphobos\XForm\Console\Commands\XFormAutoInstaller;
-use Vmphobos\XForm\Livewire\FileManager;
-use Vmphobos\XForm\View\Components\Form\Checkbox;
-use Vmphobos\XForm\View\Components\Form\Date;
-use Vmphobos\XForm\View\Components\Form\Disabled;
-use Vmphobos\XForm\View\Components\Form\Editor;
-use Vmphobos\XForm\View\Components\Form\File;
-use Vmphobos\XForm\View\Components\Form\Input;
-use Vmphobos\XForm\View\Components\Form\Label;
-use Vmphobos\XForm\View\Components\Form\Password;
-use Vmphobos\XForm\View\Components\Form\Radio;
-use Vmphobos\XForm\View\Components\Form\Select;
-use Vmphobos\XForm\View\Components\Form\Textarea;
+use VkmApps\XForm\Console\Commands\XFormAutoInstaller;
+use VkmApps\XForm\Livewire\FileManager;
+use VkmApps\XForm\View\Components\Form\Checkbox;
+use VkmApps\XForm\View\Components\Form\Date;
+use VkmApps\XForm\View\Components\Form\Disabled;
+use VkmApps\XForm\View\Components\Form\Editor;
+use VkmApps\XForm\View\Components\Form\File;
+use VkmApps\XForm\View\Components\Form\Input;
+use VkmApps\XForm\View\Components\Form\Label;
+use VkmApps\XForm\View\Components\Form\Password;
+use VkmApps\XForm\View\Components\Form\Radio;
+use VkmApps\XForm\View\Components\Form\Select;
+use VkmApps\XForm\View\Components\Form\Textarea;
 
 class XFormServiceProvider extends ServiceProvider
 {
@@ -42,7 +42,7 @@ class XFormServiceProvider extends ServiceProvider
 
         // Publish Livewire views
         $this->publishes([
-            __DIR__.'/../resources/views/livewire' => resource_path('views/vendor/vmphobos/filemanager'),
+            __DIR__.'/../resources/views/livewire' => resource_path('views/vendor/vkm-apps/filemanager'),
         ], 'views');
 
         // Register Blade components (if necessary)
@@ -58,11 +58,6 @@ class XFormServiceProvider extends ServiceProvider
     {
         // Merge package config with the app's config
         $this->mergeConfigFrom(__DIR__.'/../config/x-form.php', 'x-form');
-
-        // Autoload helpers
-//        if (file_exists($helpers = __DIR__.'/helpers.php')) {
-//            require_once $helpers;
-//        }
     }
 
     protected function registerBladeComponents(): void
