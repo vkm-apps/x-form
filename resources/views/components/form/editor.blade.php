@@ -2,8 +2,8 @@
 
 <div
     x-data="editor('{{ $uuid }}', '{{ $model }}', $wire)"
-    @edit-image="modules.image.openImageEditor($event)"
-    @insert-image="modules.image.insertImage($event)"
+    @edit-image="image.openImageEditor($event)"
+    @insert-image="image.insertImage($event)"
     wire:ignore.self
 >
     @if($label)
@@ -18,7 +18,7 @@
         {{-- PARAGRAPH --}}
         <button
             type="button"
-            @click="modules.action.paragraph(), open = false"
+            @click="action.paragraph(), open = false"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Paragraph Format') }}"
         >
@@ -59,7 +59,7 @@
                 <template x-for="h in [1,2,3,4,5,6]" :key="h">
                     <button
                         type="button"
-                        @click="modules.action.heading(h), open = false"
+                        @click="action.heading(h), open = false"
                         class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                         :style="{ 'font-size': (30 - (h/0.3)) + 'px' }"
                     >
@@ -90,19 +90,19 @@
             >
                 <button
                     type="button"
-                    @click="modules.action.uppercase(), open = false"
+                    @click="action.uppercase(), open = false"
                     class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >UPPERCASE
                 </button>
                 <button
                     type="button"
-                    @click="modules.action.lowercase(), open = false"
+                    @click="action.lowercase(), open = false"
                     class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >lowercase
                 </button>
                 <button
                     type="button"
-                    @click="modules.action.titlecase(), open = false"
+                    @click="action.titlecase(), open = false"
                     class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >Title Case
                 </button>
@@ -136,7 +136,7 @@
                 <template x-for="px in [10,12,14,16,18,20,22]" :key="px">
                     <button
                         type="button"
-                        @click="modules.action.fontsize(px), open = false"
+                        @click="action.fontsize(px), open = false"
                         class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                         :style="{ 'font-size': px + 'px' }"
                     >
@@ -149,8 +149,8 @@
         {{-- BOLD --}}
         <button
             type="button"
-            @click="modules.action.toggleBold()"
-            :class="{'bg-gray-300': modules.action.isBold}"
+            @click="action.toggleBold()"
+            :class="{'bg-gray-300': action.isBold}"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Bold') }}"
         >
@@ -167,8 +167,8 @@
         {{-- ITALIC --}}
         <button
             type="button"
-            @click="modules.action.toggleItalic()"
-            :class="{'bg-gray-300': modules.action.isItalic}"
+            @click="action.toggleItalic()"
+            :class="{'bg-gray-300': action.isItalic}"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Italic') }}"
         >
@@ -185,8 +185,8 @@
         {{-- UNDERLINE --}}
         <button
             type="button"
-            @click="modules.action.toggleUnderline()"
-            :class="{'bg-gray-300': modules.action.isUnderline}"
+            @click="action.toggleUnderline()"
+            :class="{'bg-gray-300': action.isUnderline}"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Underline') }}"
         >
@@ -203,8 +203,8 @@
         {{-- STRIKETHROUGH --}}
         <button
             type="button"
-            @click="modules.action.toggleStrikethrough()"
-            :class="{'bg-gray-300': modules.action.isStrikethrough}"
+            @click="action.toggleStrikethrough()"
+            :class="{'bg-gray-300': action.isStrikethrough}"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Strikethrough') }}"
         >
@@ -222,7 +222,7 @@
         <button
             type="button"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
-            @click="modules.action.toggleSuperscript()"
+            @click="action.toggleSuperscript()"
             title="{{ __('Superscript') }}"
         >
             <svg
@@ -239,7 +239,7 @@
         <button
             type="button"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
-            @click="modules.action.toggleSubscript()"
+            @click="action.toggleSubscript()"
             title="{{ __('Subscript') }}"
         >
             <svg
@@ -256,7 +256,7 @@
         <button
             type="button"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
-            @click="modules.action.toggleFormat('code')"
+            @click="action.toggleFormat('code')"
             title="{{ __('Code Block') }}"
         >
             <svg
@@ -273,7 +273,7 @@
             {{-- TEXT COLOR --}}
             <button
                 id="{{ $uuid }}_text_picker"
-                type="button" @click="modules.color.openColorPicker($el, 'text')"
+                type="button" @click="color.openColorPicker($el, 'text')"
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 x-ref="text_picker"
                 title="{{ __('Text Color') }}"
@@ -291,7 +291,7 @@
             {{-- BG COLOR --}}
             <button
                 id="{{ $uuid }}_bg_picker"
-                type="button" @click="modules.color.openColorPicker($el, 'background')"
+                type="button" @click="color.openColorPicker($el, 'background')"
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 x-ref="bg_picker"
                 title="{{ __('Background Color') }}"
@@ -333,7 +333,7 @@
             >
                 <button
                     type="button"
-                    @click="modules.action.alignLeft(), open = false"
+                    @click="action.alignLeft(), open = false"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
                     <svg
@@ -348,7 +348,7 @@
 
                 <button
                     type="button"
-                    @click="modules.action.alignCenter(), open = false"
+                    @click="action.alignCenter(), open = false"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
                     <svg
@@ -363,7 +363,7 @@
 
                 <button
                     type="button"
-                    @click="modules.action.alignRight(), open = false"
+                    @click="action.alignRight(), open = false"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
                     <svg
@@ -381,7 +381,7 @@
         {{-- DECREASE INDENT --}}
         {{--            <button--}}
         {{--                type="button"--}}
-        {{--                @click="modules.action.changeIndent(false)"--}}
+        {{--                @click="action.changeIndent(false)"--}}
         {{--                class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm flex items-center gap-1 text-sm"--}}
         {{--                title="{{ __('Decrease Indent') }}"--}}
         {{--            >--}}
@@ -391,7 +391,7 @@
         {{-- INCREASE INDENT --}}
         {{--            <button--}}
         {{--                type="button"--}}
-        {{--                @click="modules.action.changeIndent(true)"--}}
+        {{--                @click="action.changeIndent(true)"--}}
         {{--                class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm flex items-center gap-1 text-sm"--}}
         {{--                title="{{ __('Increase Indent') }}"--}}
         {{--            >--}}
@@ -401,7 +401,7 @@
         {{-- BULLETED LIST --}}
         <button
             type="button"
-            @click="modules.action.toggleList('ul', 'disc')"
+            @click="action.toggleList('ul', 'disc')"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Bullet List') }}"
         >
@@ -418,7 +418,7 @@
         {{-- NUMBERED LIST --}}
         <button
             type="button"
-            @click="modules.action.toggleList('ol', 'decimal')"
+            @click="action.toggleList('ol', 'decimal')"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Numbered List') }}"
         >
@@ -435,7 +435,7 @@
         {{-- LETTER LIST --}}
         <button
             type="button"
-            @click="modules.action.toggleList('ol', 'lower-alpha')"
+            @click="action.toggleList('ol', 'lower-alpha')"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Letter List') }}"
         >
@@ -462,7 +462,7 @@
         {{-- TABLE --}}
         <button
             type="button"
-            @click="modules.action.insertTable()"
+            @click="action.insertTable()"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Insert Table') }}"
         >
@@ -480,7 +480,7 @@
         <button
             type="button"
             x-ref="linkBtn"
-            @click.stop="modules.link.showPopup($event)"
+            @click.stop="link.showPopup($event)"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Insert Link') }}"
         >
@@ -498,7 +498,7 @@
         <button
             type="button"
             x-ref="videoBtn"
-            @click.stop="modules.video.insert()"
+            @click.stop="video.insert()"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Insert Embed Video') }}"
         >
@@ -506,7 +506,7 @@
         </button>
 
         <div
-            x-show="modules.video.showModal"
+            x-show="video.showModal"
             class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-1"
             wire:ignore
             x-cloak
@@ -521,28 +521,28 @@
                        <div class="p-4 rounded-sm text-sm bg-blue-100 text-blue-900 mb-2">
                            Please enter a valid YouTube video URL (https://www.youtube.com/embed/VIDEO_ID) or paste the embed iframe code. If you use embed code, make sure to check and adjust the width, height, and styles as needed.
                        </div>
-                       <textarea x-model="modules.video.youtubeUrl" class="{{ config('x-form.textarea') }}"></textarea>
+                       <textarea x-model="video.youtubeUrl" class="{{ config('x-form.textarea') }}"></textarea>
                    </div>
 
                     <div>
                         <label class="{{ config('x-form.label') }}">Video Title (Accessibility):</label>
-                        <input type="text" x-model="modules.video.videoTitle" class="{{ config('x-form.input') }}">
+                        <input type="text" x-model="video.videoTitle" class="{{ config('x-form.input') }}">
                     </div>
 
                    <div>
                        <label class="{{ config('x-form.label') }}">Custom Classes:</label>
-                       <input type="text" x-model="modules.video.customClasses" class="{{ config('x-form.input') }}">
+                       <input type="text" x-model="video.customClasses" class="{{ config('x-form.input') }}">
                    </div>
 
                    <div>
                        <label class="{{ config('x-form.label') }}">Custom Styles:</label>
-                       <input type="text" x-model="modules.video.customStyles" class="{{ config('x-form.input') }}">
+                       <input type="text" x-model="video.customStyles" class="{{ config('x-form.input') }}">
                    </div>
                 </div>
 
                 <div class="flex justify-end mt-4">
-                    <button type="button" @click="modules.video.showModal = false" class="px-4 py-2 mr-2 bg-gray-300 rounded">{{ __('Cancel') }}</button>
-                    <button type="button" @click="modules.video.add()" class="px-4 py-2 bg-blue-500 text-white rounded">{{ __('Insert') }}</button>
+                    <button type="button" @click="video.showModal = false" class="px-4 py-2 mr-2 bg-gray-300 rounded">{{ __('Cancel') }}</button>
+                    <button type="button" @click="video.add()" class="px-4 py-2 bg-blue-500 text-white rounded">{{ __('Insert') }}</button>
                 </div>
             </div>
         </div>
@@ -551,7 +551,7 @@
         <div>
             <button
                 type="button"
-                @click="modules.image.storeSelection(); modules.image.showModal = true"
+                @click="image.storeSelection(); image.showModal = true"
                 class="p-2 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Insert Image from URL') }}"
             >
@@ -566,7 +566,7 @@
             </button>
 
             <div
-                x-show="modules.image.showModal"
+                x-show="image.showModal"
                 class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-1"
                 wire:ignore
                 x-cloak
@@ -583,8 +583,8 @@
                         <input
                             id="{{ $uuid }}_image_url"
                             type="text"
-                            x-model="modules.image.src"
-                            @input="modules.image.init()"
+                            x-model="image.src"
+                            @input="image.init()"
                             class="{{ config('x-form.input') }}"
                             placeholder="Enter the url link of the image you would like to insert..."
                         />
@@ -596,14 +596,14 @@
                         </p>
 
                         <!-- Optional: Warning if input doesn't meet https requirement -->
-                        <template x-if="modules.image.src && !modules.image.src.startsWith('https://')">
+                        <template x-if="image.src && !image.src.startsWith('https://')">
                             <p class="text-xs text-red-600 mt-1">
                                 ⚠️ URL must start with <span class="font-semibold">https://</span>
                             </p>
                         </template>
                     </div>
 
-                    <div x-show="modules.image.src">
+                    <div x-show="image.src">
                         <div class="w-full my-4">
                             <label
                                 for="image_alt_text"
@@ -615,7 +615,7 @@
                             <input
                                 id="{{ $uuid }}_image_alt_text"
                                 type="text"
-                                x-model="modules.image.alt"
+                                x-model="image.alt"
                                 class="{{ config('x-form.input') }}"
                                 placeholder="Enter the alt title text for your image"
                             />
@@ -623,15 +623,15 @@
 
                         <div class="mt-4 w-full flex justify-center mb-4">
                             <img
-                                x-show="modules.image.src"
-                                :src="modules.image.src"
+                                x-show="image.src"
+                                :src="image.src"
                                 :style="{
-                                      float: modules.image.float,
-                                      width: modules.image.width+'px',
-                                      height: modules.image.height+'px',
-                                      border: modules.image.borderWidth+'px solid '+modules.image.borderColor,
-                                      borderRadius: modules.image.borderRadius+'px',
-                                      opacity: modules.image.opacity
+                                      float: image.float,
+                                      width: image.width+'px',
+                                      height: image.height+'px',
+                                      border: image.borderWidth+'px solid '+image.borderColor,
+                                      borderRadius: image.borderRadius+'px',
+                                      opacity: image.opacity
                                     }"
                                 class="shadow"
                             />
@@ -640,7 +640,7 @@
                         <div
                             class="w-full flex flex-col gap-2"
                         >
-                            <div x-show="modules.image.range == 1" class="flex items-center w-full gap-4">
+                            <div x-show="image.range == 1" class="flex items-center w-full gap-4">
                                 <!-- Width Slider and Input -->
                                 <div class="flex items-center flex-grow gap-2">
                                     <input
@@ -649,8 +649,8 @@
                                         min="0"
                                         max="1000"
                                         step="1"
-                                        x-model="modules.image.width"
-                                        @input="modules.image.changeImageDimensions('w', $el.value)"
+                                        x-model="image.width"
+                                        @input="image.changeImageDimensions('w', $el.value)"
                                         class="w-full h-2 accent-blue-500"
                                     />
 
@@ -661,8 +661,8 @@
                                             min="0"
                                             max="1000"
                                             step="1"
-                                            x-model="modules.image.width"
-                                            @input="modules.image.changeImageDimensions('w', $el.value)"
+                                            x-model="image.width"
+                                            @input="image.changeImageDimensions('w', $el.value)"
                                             class="pl-5 w-16 text-xs border border-gray-300 rounded-md py-1 px-1 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                                         />
                                     </div>
@@ -676,8 +676,8 @@
                                         min="0"
                                         max="1000"
                                         step="1"
-                                        x-model="modules.image.height"
-                                        @input="modules.image.changeImageDimensions('h', $el.value)"
+                                        x-model="image.height"
+                                        @input="image.changeImageDimensions('h', $el.value)"
                                         class="w-full h-2 accent-blue-500"
                                     />
 
@@ -688,8 +688,8 @@
                                             min="0"
                                             max="1000"
                                             step="1"
-                                            x-model="modules.image.height"
-                                            @input="modules.image.changeImageDimensions('h', $el.value)"
+                                            x-model="image.height"
+                                            @input="image.changeImageDimensions('h', $el.value)"
                                             class="pl-5 w-16 text-xs border border-gray-300 rounded-md py-1 px-1 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                                         />
                                     </div>
@@ -698,12 +698,12 @@
                                 <!-- Aspect Ratio Toggle Button -->
                                 <button
                                     type="button"
-                                    @click="modules.image.changeConstraint()"
+                                    @click="image.changeConstraint()"
                                     class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-100 transition"
                                 >
                                     <!-- Locked Aspect -->
                                     <svg
-                                        x-show="modules.image.constraint"
+                                        x-show="image.constraint"
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="20"
                                         height="20"
@@ -721,7 +721,7 @@
 
                                     <!-- Unlocked Aspect -->
                                     <svg
-                                        x-show="!modules.image.constraint"
+                                        x-show="!image.constraint"
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="20"
                                         height="20"
@@ -742,13 +742,13 @@
 
 
                             <div
-                                x-show="modules.image.range == 2"
+                                x-show="image.range == 2"
                                 class="w-full flex items-center p-2 text-sm h-8 bg-transparent focus:outline-none"
                             >
                                 <input
                                     type="range"
                                     id="{{ $uuid }}_image_border"
-                                    x-model="modules.image.borderWidth"
+                                    x-model="image.borderWidth"
                                     class="w-full"
                                     min="0"
                                     max="100"
@@ -761,24 +761,24 @@
                                     max="1000"
                                     step="1"
                                     class="ml-2 w-12 text-xs text-gray-700 border border-gray-300 rounded px-1 py-0.5 focus:outline-none"
-                                    x-model="modules.image.borderWidth"
+                                    x-model="image.borderWidth"
                                 />
 
                                 <input
                                     type="color"
-                                    @input="modules.image.setBorderColor($el.value)"
+                                    @input="image.setBorderColor($el.value)"
                                     class="rounded-md h-6 w-12"
                                 />
                             </div>
 
                             <div
-                                x-show="modules.image.range == 3"
+                                x-show="image.range == 3"
                                 class="grow flex items-center p-2 text-sm h-8 bg-transparent focus:outline-none"
                             >
                                 <input
                                     type="range"
                                     id="{{ $uuid }}_image_radius"
-                                    x-model="modules.image.borderRadius"
+                                    x-model="image.borderRadius"
                                     class="w-full"
                                     min="0"
                                     max="100"
@@ -791,18 +791,18 @@
                                     max="1000"
                                     step="1"
                                     class="ml-2 w-10 text-xs text-gray-700 border border-gray-300 rounded px-1 py-0.5 focus:outline-none"
-                                    x-model="modules.image.borderRadius"
+                                    x-model="image.borderRadius"
                                 />
                             </div>
 
                             <div
-                                x-show="modules.image.range == 4"
+                                x-show="image.range == 4"
                                 class="grow flex items-center p-2 text-sm h-8 bg-transparent focus:outline-none"
                             >
                                 <input
                                     type="range"
                                     id="{{ $uuid }}_image_brightness"
-                                    x-model="modules.image.opacity"
+                                    x-model="image.opacity"
                                     class="w-full"
                                     min="0"
                                     max="1"
@@ -813,7 +813,7 @@
                             <div class="w-full flex justify-center gap-2">
                                 <button
                                     type="button"
-                                    @click="modules.image.setRange(1)"
+                                    @click="image.setRange(1)"
                                     class="bg-gray-200 border border-gray-300/80 shadow hover:border-gray-300 text-black px-3 py-1 text-sm rounded-full min-w-20 hover:cursor-pointer"
                                 >
                                     Resize
@@ -821,7 +821,7 @@
 
                                 <button
                                     type="button"
-                                    @click="modules.image.setRange(2)"
+                                    @click="image.setRange(2)"
                                     class="bg-gray-200 border border-gray-300/80 shadow hover:border-gray-300 text-black px-3 py-1 text-sm rounded-full min-w-20 hover:cursor-pointer"
                                 >
                                     Border
@@ -829,7 +829,7 @@
 
                                 <button
                                     type="button"
-                                    @click="modules.image.setRange(3)"
+                                    @click="image.setRange(3)"
                                     class="bg-gray-200 border border-gray-300/80 shadow hover:border-gray-300 text-black px-3 py-1 text-sm rounded-full min-w-20 hover:cursor-pointer"
                                 >
                                     Border Radius
@@ -837,7 +837,7 @@
 
                                 <button
                                     type="button"
-                                    @click="modules.image.setRange(4)"
+                                    @click="image.setRange(4)"
                                     class="bg-gray-200 border border-gray-300/80 shadow hover:border-gray-300 text-black px-3 py-1 text-sm rounded-full min-w-20 hover:cursor-pointer"
                                 >
                                     Brightness
@@ -852,7 +852,7 @@
                             >Image placement:</label>
                             <select
                                 id="{{ $uuid }}_image_alignment"
-                                x-model="modules.image.float"
+                                x-model="image.float"
                                 class="rounded-sm border border-gray-300 bg-transparent p-1 w-full text-sm h-7"
                             >
                                 <option value="none">None</option>
@@ -867,22 +867,22 @@
                         type="button"
                         @click="$dispatch('insert-image')"
                         class="mt-2 bg-blue-600 border-2 border-blue-600 text-sm text-white font-medium px-3 py-1 rounded hover:cursor-pointer hover:opacity-80"
-                        x-text="modules.image.selectedImage ? 'Update Image' : 'Insert Image'"
+                        x-text="image.selectedImage ? 'Update Image' : 'Insert Image'"
                     >
                     </button>
 
                     <button
                         type="button"
-                        @click="modules.image.closeModal()"
+                        @click="image.closeModal()"
                         class="mt-2 border-2 border-gray-500 text-sm text-gray-500 font-medium px-3 py-1 rounded hover:cursor-pointer hover:opacity-80"
                     >
                         {{ __('Cancel') }}
                     </button>
 
-                    <template x-if="modules.image.selectedImage">
+                    <template x-if="image.selectedImage">
                         <button
                             type="button"
-                            @click="modules.image.remove()"
+                            @click="image.remove()"
                             class="mt-2 border-2 border-red-500 text-sm text-red-500 font-medium px-3 py-1 rounded hover:cursor-pointer hover:opacity-80"
                         >
                             {{ __('Remove Image') }}
@@ -900,7 +900,7 @@
         {{-- CLEAR HTML FORMAT --}}
         <button
             type="button"
-            @click="modules.cleanup.run()"
+            @click="cleanup.run()"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm flex items-center gap-1 text-sm"
             title="{{ __('Clear formatting on the selected content') }}"
         >

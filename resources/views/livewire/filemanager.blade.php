@@ -16,7 +16,7 @@
 >
     <button
         type="button"
-        @click="modules.image.init(); open = true; $wire.loadGallery()"
+        @click="image.init(); open = true; $wire.loadGallery()"
         class="p-2 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
         x-tooltip="Open Media Manager"
     >
@@ -187,7 +187,7 @@
                                         <template x-if="visible">
                                             <button
                                                 type="button"
-                                                @click="modules.image.insertFile(file.url), open = false"
+                                                @click="image.insertFile(file.url), open = false"
                                                 class="hover:cursor-pointer hover:opacity-80 flex flex-col items-start space-y-1 hover:cursor-pointer hover:opacity-80 w-full"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="w-full h-auto" fill="currentColor"><path d="m720-120 160-160-56-56-64 64v-167h-80v167l-64-64-56 56 160 160ZM560 0v-80h320V0H560ZM240-160q-33 0-56.5-23.5T160-240v-560q0-33 23.5-56.5T240-880h280l240 240v121h-80v-81H480v-200H240v560h240v80H240Zm0-80v-560 560Z"/></svg>

@@ -2,6 +2,10 @@
 
 X-Form is a fully customized package of Blade components for **Laravel 10+**, built with **Livewire 3+**, **Tailwind CSS 4**, and **AlpineJS 3**. It simplifies the creation of dynamic, interactive forms while keeping them fully customizable.
 
+To enjoy full compatibility use along with AlpineJS plugins:
+https://github.com/vkm-apps/vkm-js
+
+
 ## Installation
 
 Install X-Form and via Composer:
@@ -109,7 +113,25 @@ public function yourList(): array
 }
 ```
 
-> Arrays use string keys to preserve frontend ordering independent of backend ordering.
+> Arrays use string keys to preserve frontend ordering.
+
+---
+
+## Editor
+> Requires @vkm-js/editor & @vkm-js/dropdown alpine plugins
+
+The Editor component provides a rich content editor with all the essential tools for writing, editing, and styling text. It supports advanced formatting and can optionally integrate a file manager for uploading and selecting media files.
+
+* Add the with-filemanager attribute to enable file management.
+
+* By default, uploaded files are stored on the media disk. You can change this in the x-form.php configuration file.
+
+Example usage:
+```
+<x-form.editor model="html.en" label="Content" with-filemanager />
+```
+
+This will render a fully-featured editor for the html.en property with file manager support enabled.
 
 ---
 
