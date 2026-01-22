@@ -13,6 +13,7 @@ class Editor extends Component
         public ?string $label = null,
         public ?string $content = null,
         public ?string $model = null,
+        public ?string $watchFor = null,
         public ?string $rule = null,
         public ?bool $withFilemanager = false,
     )

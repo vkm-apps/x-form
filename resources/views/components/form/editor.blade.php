@@ -1,7 +1,7 @@
 @props(['icon_size' => 'size-5'])
 
 <div
-    x-data="editor('{{ $uuid }}', '{{ $model }}', $wire)"
+    x-data="editor('{{ $uuid }}', '{{ $model }}', $wire, '{{ $watchFor }}')"
     @edit-image="image.openImageEditor($event)"
     @insert-image="image.insertImage($event)"
     wire:ignore.self
@@ -916,17 +916,16 @@
     </div>
 
     {{-- EDITOR --}}
-    <div>
-        <div
-            id="{{ $uuid }}"
-            class="p-4 min-h-60 overflow-auto outline-none bg-black/1 dark:bg-white/10 border dark:text-white border-black/5 dark:border-white/20 rounded-b-md [&>img]:hover:cursor-grab [&>img]:active:cursor-grabbing"
-            contenteditable="true"
-            @input="save()"
-            x-ref="editor"
-        >
-            {!! $content !!}
-        </div>
+    <div
+        id="{{ $uuid }}"
+        class="p-4 min-h-60 overflow-auto outline-none bg-black/1 dark:bg-white/10 border dark:text-white border-black/5 dark:border-white/20 rounded-b-md [&>img]:hover:cursor-grab [&>img]:active:cursor-grabbing"
+        contenteditable="true"
+        @input="save()"
+        x-ref="editor"
+    >
+        {!! $content !!}
     </div>
+
 
     @error($rule)
         <div class="{{ config('x-form.error') }}">{!! $message !!}</div>

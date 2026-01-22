@@ -1,5 +1,6 @@
 # VKM APPS | X-Form
-
+#### ✨ Speed up your form building!
+You can now create forms in just one line using Blade components — no more repeating yourself! 🚀💻
 X-Form is a fully customized package of Blade components for **Laravel 10+**, built with **Livewire 3+**, **Tailwind CSS 4**, and **AlpineJS 3**. It simplifies the creation of dynamic, interactive forms while keeping them fully customizable.
 
 To enjoy full compatibility use along with AlpineJS plugins:
@@ -9,19 +10,16 @@ https://github.com/vkm-apps/vkm-js
 ## Installation
 
 Install X-Form and via Composer:
-
-```
+```bash
 composer require vkm-apps/x-form
 ```
 
 Publish the configuration files:
+```bash
+php artisan vendor:publish --tag=x-form:config
+```
 
-```
-php artisan x-form:install
-# or
-php artisan vendor:publish
-```
-Once published, you can customize field layouts, icons, colors, and Tailwind classes to match your project’s design.
+> Once published, you can customize field layouts, icons, colors, and Tailwind classes to match your project’s design.
 
 ---
 
@@ -127,7 +125,7 @@ The Editor component provides a rich content editor with all the essential tools
 * By default, uploaded files are stored on the media disk. You can change this in the x-form.php configuration file.
 
 Example usage:
-```
+```blade
 <x-form.editor model="html.en" label="Content" with-filemanager />
 ```
 
@@ -165,8 +163,8 @@ Grouped checkboxes support **tooltips** and **toggle actions per group**.
 ```php
 $countries = [
   'europe' => [
-      ['id' => '55', 'title' => 'Greece', 'description' => 'Greece, officially the Hellenic Republic...'],
-      ['id' => '111', 'title' => 'Italy', 'description' => 'Italy is a country...'],
+      ['id' => 'gr', 'title' => 'Greece', 'description' => 'Greece, officially the Hellenic Republic...'],
+      ['id' => 'it', 'title' => 'Italy', 'description' => 'Italy is a country in Mediterranean sea...'],
   ],
 ];
 ```
@@ -174,9 +172,9 @@ $countries = [
 **Example toggle function:**
 
 ```php
-public function yourFunction($category)
+public function yourFunction($groupKeyNameOrID)
 {
-    // $category is 'europe'
+    // $groupKeyNameOrID is 'europe'
 }
 ```
 
@@ -206,6 +204,4 @@ Use `x-form.disabled` to display non-editable content. You can include copy butt
 </x-form.disabled>
 ```
 
-> Copy functionality is powered by AlpineJS by default.
-
-```
+> The Copy functionality is powered by AlpineJS by default.
