@@ -1,6 +1,6 @@
 {
     "name": "vkm-apps/x-form",
-    "description": "Reusable Laravel Form Components for Livewire and standard Blade.",
+    "description": "Reusable Laravel Blade Form Components using Livewire & AlpineJS.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -9,6 +9,7 @@
             "email": "vasilis.milopoulos@gmail.com"
         }
     ],
+    "keywords": ["Laravel", "livewire", "html forms", "form layouts", "blade", "components", "alpinejs"],
     "autoload": {
         "psr-4": {
             "VkmApps\\XForm\\": "src/"
