@@ -87,7 +87,7 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="{{ config('x-form.icon_size') }} lucide lucide-x-icon lucide-x"
+                    class="{{ config('x-form.icon_size') }}"
                     @click.stop="title = '-', model = '', opened = false, search=''; if (typeof $wire !== 'undefined') { $wire.set('{{ $model }}', '', {{ $live ? 'true' : 'false' }}) }"
                 >
                     <path d="M18 6 6 18" />
@@ -104,7 +104,7 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="{{ config('x-form.icon_size') }} lucide lucide-chevron-down-icon lucide-chevron-down"
+                    class="{{ config('x-form.icon_size') }}"
                 >
                     <path d="m6 9 6 6 6-6" />
                 </svg>
@@ -130,11 +130,10 @@
         @endif
 
         <div
-            class="scrollbar-thin min-w-48 py-2 px-0 text-sm text-left list-none rounded-md shadow-lg backdrop-blur-md bg-white/30 dark:bg-white/10 bg-clip-padding border-gray-400 text-gray-500 dark:text-dark-100 absolute w-full overflow-x-hidden overflow-y-auto"
+            class="{{ config('x-form.dropdown.background') }}"
             aria-labelledby="{{ 'btn_' . $uuid }}"
             style="min-width: {{ $minWidth }}; max-height: {{ $maxHeight }}; z-index: 1040;"
             x-show="opened"
-
             x-cloak
         >
             {{-- Search is inside dropdown --}}
