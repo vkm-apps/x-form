@@ -97,6 +97,7 @@ return [
     ]),
 
     'dropdown' => [
+        'background' => 'scrollbar-thin min-w-48 py-2 px-0 text-sm text-left list-none rounded-md shadow-lg backdrop-blur-md bg-white/50 dark:bg-black/50 bg-clip-padding border-gray-400 text-gray-500 dark:text-dark-100 absolute w-full overflow-x-hidden overflow-y-auto',
         'input' => implode(' ', [
             $base['flex'],
             'w-full',
