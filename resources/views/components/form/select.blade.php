@@ -5,8 +5,6 @@
 
     {{ $prepend }}
 
-
-
     @if ($label)
         <x-form.label
             :for="$uuid"
