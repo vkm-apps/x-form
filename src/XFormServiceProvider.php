@@ -12,6 +12,7 @@ use VkmApps\XForm\View\Components\Form\Date;
 use VkmApps\XForm\View\Components\Form\Disabled;
 use VkmApps\XForm\View\Components\Form\Editor;
 use VkmApps\XForm\View\Components\Form\File;
+use VkmApps\XForm\View\Components\Form\FileUrl;
 use VkmApps\XForm\View\Components\Form\Input;
 use VkmApps\XForm\View\Components\Form\Label;
 use VkmApps\XForm\View\Components\Form\Password;
@@ -71,6 +72,7 @@ class XFormServiceProvider extends ServiceProvider
         Blade::component('form.radio', Radio::class);
         Blade::component('form.select', Select::class);
         Blade::component('form.file', File::class);
+        Blade::component('form.file-url', FileUrl::class);
         Blade::component('form.textarea', Textarea::class);
         Blade::component('form.disabled', Disabled::class);
         Blade::component('form.password', Password::class);

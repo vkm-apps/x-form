@@ -894,7 +894,7 @@
 
         {{-- FILE MANAGER INSERT --}}
         @if($withFilemanager)
-            <livewire:filemanager :key="'file_manager_' . $uuid" />
+            <livewire:filemanager :key="'file_manager_' . $uuid" :standalone="false" />
         @endif
 
         {{-- CLEAR HTML FORMAT --}}

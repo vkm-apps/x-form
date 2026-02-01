@@ -1,35 +1,61 @@
 <div
     x-data="{
+        uuid: '{{ $uuid }}',
         open: false,
         files: @entangle('files'),
         image_selected: false,
         current_path: @entangle('current_path'),
+        standalone: @js($standalone),
+        error: @entangle('error') ?? null,
+        isSubfolder() {
+            this.current_path = this.current_path.replace(/\\/g, '/');
+            return this.current_path && this.current_path !== '/';
+        },
         confirmAndCreateFolder() {
-            const folder_name = prompt('Enter the folder name:');
+            const folder_name = prompt(
+                'Enter the folder name:\n' +
+                '(Note: spaces and special characters will be replaced with dashes. ' +
+                'For example, My New Folder will become my-new-folder)'
+            );
 
             if (folder_name && folder_name.trim() !== '') {
                 $wire.set('folder_name', folder_name.trim());
             }
-        },
+        }
     }"
     wire:ignore
 >
     <button
         type="button"
-        @click="image.init(); open = true; $wire.loadGallery()"
-        class="p-2 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
-        x-tooltip="Open Media Manager"
+        @click="
+            if (!standalone) image.init();
+            $wire.loadGallery();
+            open = true;
+        "
+        class="flex items-center"
     >
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Zm0-80h640v-400H447l-80-80H160v480Zm0 0v-480 480Z"/></svg>
+        <div
+            @class([
+                'text-black dark:text-white hover:cursor-pointer',
+                'rounded-r-xl p-3 w-full h-full bg-black/10 dark:bg-white/10 text-black dark:text-white hover:opacity-80 hover:cursor-pointer' => $uuid,
+                'p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-sm' => !$uuid,
+            ])
+            @unless($uuid)
+                x-tooltip="Open Media Manager"
+            @endunless
+        >
+            {!! config('x-form.icons.folder') !!}
+        </div>
     </button>
 
-    <!-- Modal for File Manager -->
-    <div class="fixed inset-0 backdrop-blur-lg flex justify-center items-center z-100" x-show="open" x-cloak>
+    {{-- FILE MANAGER MODAL --}}
+    <div class="fixed inset-0 backdrop-blur-lg flex justify-center items-center z-100" x-show="open" @close-modal="open = false" x-cloak>
         <div class="relative bg-white/90 dark:bg-black/90 p-4 rounded-lg border border-black/10 shadow-lg w-3/4 min-h-2/4">
-            <!-- Loading Spinner -->
+            {{-- LOADING SPINNER --}}
             <div
                 wire:loading.class.remove="hidden"
-                class="hidden opacity-80 absolute inset-0 flex gap-2 items-center justify-center backdrop-blur-xs rounded-lg z-10"
+                wire:loading.class="flex"
+                class="hidden opacity-80 absolute inset-0 gap-2 items-center justify-center bg-white/50 dark:bg-black/50 backdrop-blur-lg rounded-lg z-10"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -45,29 +71,59 @@
             </div>
 
             <div x-show="!image_selected">
-                <div class="w-full flex items-center">
-                    <!-- Back Button if in a subfolder -->
-                    <div class="mb-4 flex items-center gap-4">
+                <div class="w-full flex items-center justify-between max-sm:flex-col max-sm:items-start gap-2">
+                    {{-- BACK BUTTON ON FOLDERS --}}
+                    <div class="flex items-center gap-4">
                         <button
                             type="button"
-                            x-show="current_path && current_path !== '/'"
-                            @click="$wire.loadGallery(current_path.split('/').slice(0, -1).join('/'))"
-                            class="float-left text-white p-1 rounded bg-black/5 hover:cursor-pointer hover:opacity-80"
+                            x-show="isSubfolder()"
+                            @click="$wire.goBack()"
+                            class="float-left p-1 rounded-sm bg-black/10 dark:bg-white/10 text-black/90 dark:text-white/90 hover:cursor-pointer hover:opacity-80"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="size-5"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="size-5" fill="currentColor"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/></svg>
                         </button>
 
                         <div class="flex items-center gap-2">
-                            <span class="text-xs bg-gray-200 rounded py-1 overflow-hidden">
-                                <span class="font-medium bg-gray-300 border-r-gray-300 py-1 px-2">DISK: </span>
-                                <span class="px-2">{{ $this->disk }}</span>
+                            <span class="text-xs bg-black/10 dark:bg-white/5 text-black/90 dark:text-white/90 rounded py-1.5 overflow-hidden">
+                                <span class="font-medium bg-black/5 dark:bg-white/10  py-2 px-2">DISK: </span>
+                                <span class="px-2" x-text="$wire.disk_name"></span>
                             </span>
 
-                            <span class="font-medium text-sm">{{ $current_path }}</span>
+                            <span class="text-xs bg-black/10 dark:bg-white/5 text-black/90 dark:text-white/90 rounded py-1.5 overflow-hidden">
+                                <span class="font-medium bg-black/5 dark:bg-white/10 py-2 px-2">PATH: </span>
+                                <span class="px-2" x-text="current_path"></span>
+                            </span>
                         </div>
                     </div>
 
-                    <div class="ml-auto flex items-center gap-2">
+                    {{-- CREATE NEW FOLDER --}}
+                    <div class="flex items-center gap-2">
+                        <button
+                            type="button"
+                            class="flex items-center justify-center align-middle text-xs px-3 py-1.5 rounded-sm bg-black/10 dark:bg-white/10 text-black/90 dark:text-white/90 font-medium  hover:cursor-pointer hover:opacity-80"
+                            @click="confirmAndCreateFolder();"
+                        >
+                            📁 {{ __('New Folder') }}
+                        </button>
+
+                        {{-- UPLOAD FILE --}}
+                        <button
+                            type="button"
+                            class="flex items-center justify-center align-middle text-xs px-3 py-1.5 rounded-sm bg-black/10 dark:bg-white/10 text-black/90 dark:text-white/90 font-medium  hover:cursor-pointer hover:opacity-80"
+                            @click="$refs.fileInput.click();"
+                        >
+                            ⬆️ {{ __('Upload File') }}
+                        </button>
+
+                        <input
+                            type="file"
+                            x-ref="fileInput"
+                            wire:model="media_file"
+                            class="hidden"
+                            accept="{{ $this->allowed_mime_types }}"
+                        />
+
+                        {{-- DELETE DIRECTORY --}}
                         <button
                             type="button"
                             @click="
@@ -75,84 +131,32 @@
                                     $wire.deleteDirectory();
                                 }
                             "
-                            x-show="current_path && current_path !== '/'"
-                            class="text-xs bg-red-500 font-medium rounded py-1 flex gap-2 px-1 text-white hover:cursor-pointer hover:opacity-80"
+                            x-show="isSubfolder()"
+                            class="flex items-center justify-center align-middle text-xs px-3 py-1.5 rounded-sm bg-black/10 dark:bg-white/10 text-black/90 dark:text-white/90 font-medium hover:cursor-pointer hover:opacity-80"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="size-4 fill-white"><path d="m871-202-71-71v-367H434l-80-80-80-80h114l80 80h332q33 0 56.5 23.5T880-640v400q0 11-2 20.5t-7 17.5ZM819-28 687-160H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800l80 80h-80v480h447L28-820l56-56L876-84l-57 56ZM368-480Zm209-17Z"/></svg>
-                            Delete Directory
+                            🗑️ {{ __('Delete Directory') }}
                         </button>
 
+                        {{-- CLOSE FILE MANAGER --}}
                         <button
                             type="button"
                             @click="open = false"
-                            class="text-gray-500 dark:text-white hover:text-gray-700 p-1 rounded-sm bg-black/5 dark:bg-white/10 hover:cursor-pointer hover:opacity-80"
+                            class="p-1 rounded-sm bg-black/10 dark:bg-white/10 text-black/90 dark:text-white/90  hover:cursor-pointer hover:opacity-80"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 -960 960 960" fill="currentColor"><path d="m336-280-56-56 144-144-144-143 56-56 144 144 143-144 56 56-144 143 144 144-56 56-143-144-144 144Z"/></svg>
                         </button>
                     </div>
                 </div>
 
-                @error('mediafile')
-                <div class="text-sm bg-red-200 text-red-800 rounded p-2 my-2">
-                    File error: {{ $message }}
-                </div>
-                @enderror
-
-                <!-- File List: Folders and Images -->
-                <div class="mt-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-8 max-h-[90vh] overflow-y-auto">
-                    <div x-data="{ open: false }" @click.outside="open = false" class="flex justify-center">
-                        <button
-                            type="button"
-                            x-ref="button"
-                            @click="open = ! open"
-                            class="size-20 rounded-md border-3 border-gray-200 flex items-center justify-center align-middle hover:cursor-pointer hover:opacity-80"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                class="fill-gray-400 icon icon-tabler icons-tabler-filled icon-tabler-circle-plus"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M4.929 4.929a10 10 0 1 1 14.141 14.141a10 10 0 0 1 -14.14 -14.14zm8.071 4.071a1 1 0 1 0 -2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0 -2h-2v-2z" />
-                            </svg>
-                        </button>
-
-                        <div
-                            x-show="open"
-                            x-anchor="$refs.button"
-                            class="bg-white shadow-lg text-sm text-zinc-500 border border-gray-200 rounded-sm flex flex-col"
-                        >
-                            <button
-                                type="button"
-                                @click="confirmAndCreateFolder(); open = false"
-                                class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
-                            >
-                                {{ __('Create New Folder') }}
-                            </button>
-
-                            <div>
-                                <button
-                                    type="button"
-                                    @click="$refs.fileInput.click(); open = false"
-                                    class="capitalize w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
-                                >
-                                    {{ __('upload file') }}
-                                </button>
-
-                                <input
-                                    type="file"
-                                    x-ref="fileInput"
-                                    wire:model="mediafile"
-                                    class="hidden"
-                                    accept="image/*, .doc, .docx, .xls, .xlsx, .pdf, .mp4"
-                                />
-                            </div>
-                        </div>
+                {{-- ERROR DISPLAY --}}
+                <template x-if="error">
+                    <div class="w-full text-sm bg-red-200 text-red-800 rounded p-2 my-2">
+                        File error: <span x-text="error"></span>
                     </div>
+                </template>
 
+                {{-- FILE LIST --}}
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 max-h-[90vh] overflow-y-auto">
                     <template x-for="file in files" :key="file.name">
                         <div class="w-full">
                             {{-- FOLDERS --}}
@@ -160,20 +164,25 @@
                                 <button
                                     type="button"
                                     @click="$wire.loadGallery(file.path)"
-                                    class="flex flex-col justify-center items-center text-blue-500 hover:underline hover:cursor-pointer hover:opacity-80"
+                                    class="w-full aspect-square group hover:cursor-pointer"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="72"
-                                        height="72"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                        class="fill-amber-400 icon icon-tabler icons-tabler-filled icon-tabler-folder"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M9 3a1 1 0 0 1 .608 .206l.1 .087l2.706 2.707h6.586a3 3 0 0 1 2.995 2.824l.005 .176v8a3 3 0 0 1 -2.824 2.995l-.176 .005h-14a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-11a3 3 0 0 1 2.824 -2.995l.176 -.005h4z" />
-                                    </svg>
-                                    <span x-text="file.name"></span>
+                                    <div class="relative w-full h-full flex flex-col justify-between">
+                                        <div class="flex flex-col flex-1 px-3 py-2 relative group-hover:opacity-80">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="currentColor"
+                                                class="w-full fill-amber-400 icon icon-tabler icons-tabler-filled icon-tabler-folder"
+                                            >
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M9 3a1 1 0 0 1 .608 .206l.1 .087l2.706 2.707h6.586a3 3 0 0 1 2.995 2.824l.005 .176v8a3 3 0 0 1 -2.824 2.995l-.176 .005h-14a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-11a3 3 0 0 1 2.824 -2.995l.176 -.005h4z" />
+                                            </svg>
+                                        </div>
+
+                                        <div class="w-full absolute bottom-2 text-sm truncate">
+                                            <span x-text="file.name" class="group-hover:underline"></span>
+                                        </div>
+                                    </div>
                                 </button>
                             </template>
 
@@ -181,23 +190,88 @@
                             <template x-if="file.type === 'file'">
                                 <div x-data="{ visible: false }" :title="file.name">
                                     <div
+                                        class="w-full aspect-square rounded-lg bg-black/5 dark:bg-white/10 opacity-80 hover:opacity-100 group"
                                         x-intersect:enter="visible = true"
                                         x-intersect:leave="visible = false"
                                     >
                                         <template x-if="visible">
-                                            <button
-                                                type="button"
-                                                @click="image.insertFile(file.url), open = false"
-                                                class="hover:cursor-pointer hover:opacity-80 flex flex-col items-start space-y-1 hover:cursor-pointer hover:opacity-80 w-full"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="w-full h-auto" fill="currentColor"><path d="m720-120 160-160-56-56-64 64v-167h-80v167l-64-64-56 56 160 160ZM560 0v-80h320V0H560ZM240-160q-33 0-56.5-23.5T160-240v-560q0-33 23.5-56.5T240-880h280l240 240v121h-80v-81H480v-200H240v560h240v80H240Zm0-80v-560 560Z"/></svg>
+                                            <div class="w-full h-full flex flex-col justify-between">
+                                                <div class="p-2 flex flex-none basis-12 items-center gap-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 lucide lucide-file-icon lucide-file"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></svg>
+                                                    <span
+                                                        x-text="file.name"
+                                                        class="w-full text-xs text-black dark:text-white opacity-80 text-ellipsis overflow-hidden whitespace-nowrap group-hover:overflow-none group-hover:break-all group-hover:whitespace-normal"
+                                                    ></span>
+                                                </div>
 
-                                                <span
-                                                    class="w-full text-sm overflow-hidden text-ellipsis dark:text-white break-words"
-                                                    x-text="file.name"
-                                                >
-                                                </span>
-                                            </button>
+                                                <div class="flex flex-1 px-3 py-2 relative">
+                                                    <div class="w-full h-full flex flex-col justify-start gap-1 mt-2">
+                                                        <div class="h-1 bg-gray-300 rounded w-3/4"></div>
+                                                        <div class="h-1 bg-gray-300 rounded w-2/3"></div>
+                                                        <div class="h-1 bg-gray-300 rounded w-1/2"></div>
+                                                        <div class="h-1 bg-gray-300 rounded w-5/6"></div>
+                                                        <div class="h-1 bg-gray-300 rounded w-2/4"></div>
+                                                        <div class="h-1 bg-gray-300 rounded w-3/4"></div>
+                                                        <div class="h-1 bg-gray-300 rounded w-3/5"></div>
+                                                        <div class="h-1 bg-gray-300 rounded w-4/6"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="relative p-2 flex flex-none items-center justify-between text-xs">
+                                                    <div class="flex items-center gap-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 lucide lucide-calendar-icon lucide-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                                                        <span class="text-black dark:text-white opacity-70" x-text="file.modified_at"></span>
+                                                    </div>
+
+                                                    <div x-data="{ openDropdown: false }">
+                                                        <button
+                                                            type="button"
+                                                            x-ref="dropdownButton"
+                                                            class="bg-black/10 dark:bg-white/10 dark:text-white/50 flex size-6 rounded-full align-middle items-center justify-center p-1 hover:cursor-pointer hover:opacity-80"
+                                                            @click="openDropdown = !openDropdown"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                                        </button>
+
+                                                        <div
+                                                            x-show="openDropdown"
+                                                            x-anchor="$refs.dropdownButton"
+                                                            @click.outside="openDropdown = false"
+                                                            x-transition:enter="transition ease-out duration-200"
+                                                            x-transition:enter-start="opacity-0 scale-90"
+                                                            x-transition:enter-end="opacity-100 scale-100"
+                                                            x-transition:leave="transition ease-in duration-150"
+                                                            x-transition:leave-start="opacity-100 scale-100"
+                                                            x-transition:leave-end="opacity-0 scale-90"
+                                                            class="mt-2 w-48 bg-white/70 dark:bg-black/70 backdrop-blur-lg rounded-lg shadow-lg ring-1 ring-black/5 dark:ring-white/10 overflow-hidden z-50"
+                                                        >
+                                                            <button
+                                                                type="button"
+                                                                role="button"
+                                                                class="w-full block px-4 py-2 text-black/80 dark:text-white/80 hover:bg-black/5 dark:hover:bg-white/10 hover:cursor-pointer"
+                                                                @click="
+                                                                    if (!standalone) image.insertFile(file.url);
+                                                                    if (standalone) $dispatch('xform-set-url', {url: file.url, uuid: uuid});
+                                                                    open = false
+                                                                "
+                                                            >
+                                                                {{ __('Insert Link') }}
+                                                            </button>
+
+                                                            <button
+                                                                type="button"
+                                                                role="button"
+                                                                class="w-full block px-4 py-2 text-black/80 dark:text-white/80 hover:bg-black/5 dark:hover:bg-white/10 hover:cursor-pointer"
+                                                                @click="if (confirm('Are you sure you want to delete the file?')) {
+                                                                    $wire.deleteSelectedFile(file.path)
+                                                                }"
+                                                            >
+                                                                {{ __('Delete File') }}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </template>
                                     </div>
                                 </div>
@@ -207,25 +281,82 @@
                             <template x-if="file.type === 'image'">
                                 <div x-data="{ visible: false }" :title="file.name">
                                     <div
+                                        class="w-full aspect-square rounded-lg bg-black/5 dark:bg-white/10 opacity-80 hover:opacity-100"
                                         x-intersect:enter="visible = true"
                                         x-intersect:leave="visible = false"
                                     >
                                         <template x-if="visible">
-                                            <button
-                                                type="button"
-                                                @click="$dispatch('edit-image', {url: file.url, path: file.path}); open = false"
-                                                class="hover:cursor-pointer hover:opacity-80 flex flex-col items-start space-y-1 hover:cursor-pointer hover:opacity-80 w-full"
-                                            >
-                                                <img
-                                                    :src="file.url"
-                                                    class="aspect-1/1 object-cover rounded border border-gray-200 hover"
-                                                />
-                                                <span
-                                                    class="w-full text-sm overflow-hidden text-ellipsis dark:text-white break-words"
-                                                    x-text="file.name"
-                                                >
-                                                </span>
-                                            </button>
+                                            <div class="w-full h-full flex flex-col justify-between group">
+                                                <div class="p-2 flex flex-none basis-12 items-center gap-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 lucide lucide-image-icon lucide-image"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                                                    <span
+                                                        x-text="file.name"
+                                                        class="w-full text-xs text-black dark:text-white opacity-80 text-ellipsis overflow-hidden whitespace-nowrap group-hover:overflow-none group-hover:break-all group-hover:whitespace-normal"
+                                                    ></span>
+                                                </div>
+
+                                                <div class="relative flex-1 overflow-hidden relative">
+                                                    <img
+                                                        :src="file.url"
+                                                        class="absolute inset-0 w-full h-full object-cover"
+                                                    />
+                                                </div>
+
+                                                <div class="relative p-2 flex flex-none items-center justify-between text-xs">
+                                                    <div class="flex items-center gap-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 lucide lucide-calendar-icon lucide-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                                                        <span class="text-black dark:text-white opacity-70" x-text="file.modified_at"></span>
+                                                    </div>
+
+                                                    <div x-data="{ openDropdown: false }">
+                                                        <button
+                                                            type="button"
+                                                            x-ref="dropdownButton"
+                                                            class="bg-black/10 dark:bg-white/10 dark:text-white/50 flex size-6 rounded-full align-middle items-center justify-center p-1 hover:cursor-pointer hover:opacity-80"
+                                                            @click="openDropdown = !openDropdown"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                                        </button>
+
+                                                        <div
+                                                            x-show="openDropdown"
+                                                            x-anchor="$refs.dropdownButton"
+                                                            @click.outside="openDropdown = false"
+                                                            x-transition:enter="transition ease-out duration-200"
+                                                            x-transition:enter-start="opacity-0 scale-90"
+                                                            x-transition:enter-end="opacity-100 scale-100"
+                                                            x-transition:leave="transition ease-in duration-150"
+                                                            x-transition:leave-start="opacity-100 scale-100"
+                                                            x-transition:leave-end="opacity-0 scale-90"
+                                                            class="mt-2 w-48 bg-white/70 dark:bg-black/70 backdrop-blur-lg rounded-lg shadow-lg ring-1 ring-black/5 dark:ring-white/10 overflow-hidden z-50"
+                                                        >
+                                                            <button
+                                                                type="button"
+                                                                role="button"
+                                                                class="w-full block px-4 py-2 text-black/80 dark:text-white/80 hover:bg-black/5 dark:hover:bg-white/10 hover:cursor-pointer"
+                                                                @click="
+                                                                    $dispatch('edit-image', {url: file.url, path: file.path});
+                                                                    if (standalone) $dispatch('xform-set-url', {url: file.url, uuid: uuid});
+                                                                    open = false
+                                                                "
+                                                                x-text="standalone ? '{{ __('Insert Link') }}' : '{{ __('Select Image') }}'"
+                                                            >
+                                                            </button>
+
+                                                            <button
+                                                                type="button"
+                                                                role="button"
+                                                                class="w-full block px-4 py-2 text-black/80 dark:text-white/80 hover:bg-black/5 dark:hover:bg-white/10 hover:cursor-pointer"
+                                                                @click="if (confirm('Are you sure you want to delete the file?')) {
+                                                                    $wire.deleteSelectedFile(file.path)
+                                                                }"
+                                                            >
+                                                                {{ __('Delete File') }}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </template>
                                     </div>
                                 </div>

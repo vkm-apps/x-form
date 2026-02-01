@@ -1,243 +1,221 @@
 <?php
 
 /**
- * | X-Form CSS classes
- * | You can extend this further if needed.
- * |
+ * --------------------------------------------------------------------------
+ * X-Form Configuration
+ * --------------------------------------------------------------------------
+ *
+ * This configuration file defines the styling, behavior, and icons used
+ * by the X-Form components throughout the application.
+ *
+ * Features:
+ *  - Centralized Tailwind CSS classes for inputs, textareas, dropdowns,
+ *    checkboxes, radio buttons, file uploads, and disabled fields.
+ *  - Standardized label, error, and required field styles.
+ *  - Configurable icon sizes and SVG icons for actions, currencies, and
+ *    common UI elements.
+ *  - Supports dark mode and responsive styling.
+ *  - Easily extendable by updating the $base array or adding new
+ *    component definitions.
+ *
+ * Usage:
+ *  Access these settings via `config('xform.input')`, `config('xform.icons')`,
+ *  or other keys as needed in Blade templates or PHP code.
+ *
+ */
+
+
+
+/**
+ * Base Tailwind classes for X-Form components (inputs, textareas, dropdowns,
+ * checkboxes, radios, uploads). Centralizes typography, layout, states, and
+ * choice styles for reuse and easier maintenance.
  */
 $icon_size = 'size-4';
 
-//Style all the inputs inc. background, text, border etc.
 $base = [
-    'bg' => 'bg-black/1 dark:bg-white/5 backdrop-blur-md shadow-xs',
-
-    'border' => 'border border-black/5 dark:border-white/10',
-
-    'rounded' => 'rounded-md',
-
-    'text_color' => 'text-black/80 dark:text-white/90',
-
-    'text_size' => 'text-sm',
-
-    'focus' => 'focus:ring-1 focus:ring-black/50 dark:focus:ring-white/50 focus:ring-blue-500/50 focus:shadow-md outline-none',
-
-    'flex' => 'flex items-center gap-2',
-
-    'disabled_bg' => 'bg-black/5 dark:bg-white/5 backdrop-blur-md border border-black/5 dark:border-black/10',
-
-    'disabled_text' => 'text-sm text-black/50 dark:text-white/60',
-
-    'transition' => 'transition-all duration-200',
-
-    'min_height' => [
-        'input' => 'min-h-5',
-        'disabled' => 'min-h-7',
+    'typography' => [
+        'text_color' => 'text-black/80 dark:text-white/90',
+        'text_size'  => 'text-sm',
     ],
-
-    'check_radio_input' => 'flex items-center justify-center cursor-pointer rounded-sm border-1 border-black/20 dark:border-white/20 transition peer-checked:border-black/70 dark:peer-checked:border-white/30 dark:peer-checked:bg-white/10 peer-checked:[&>svg]:flex peer-checked:[&>svg]:opacity-100',
-
-    'choice_horizontal' => 'flex flex-row items-center space-x-2 mt-1.5 pe-4',
-
-    'choice_vertical' => 'flex flex-col gap-2 mt-1',
+    'layout' => [
+        'flex_center' => 'flex items-center gap-2',
+        'rounded'     => 'rounded-md',
+        'transition'  => 'transition-all duration-200',
+    ],
+    'inputs' => [
+        'bg'      => 'bg-black/1 dark:bg-white/5 backdrop-blur-md shadow-xs',
+        'border'  => 'border border-black/5 dark:border-white/10',
+        'focus'   => 'focus:ring-1 focus:ring-black/50 dark:focus:ring-white/50 focus:ring-blue-500/50 focus:shadow-md outline-none',
+        'min_height' => [
+            'input'    => 'min-h-5',
+            'disabled' => 'min-h-7',
+        ],
+    ],
+    'states' => [
+        'disabled_bg'   => 'bg-black/5 dark:bg-white/5 backdrop-blur-md border border-black/5 dark:border-white/10',
+        'disabled_text' => 'text-sm text-black/50 dark:text-white/60',
+    ],
+    'check_radio' => 'flex items-center justify-center cursor-pointer rounded-sm border-1 border-black/20 dark:border-white/20 transition peer-checked:border-black/70 dark:peer-checked:border-white/30 dark:peer-checked:bg-white/10 peer-checked:[&>svg]:flex peer-checked:[&>svg]:opacity-100',
+    'choice' => [
+        'horizontal' => 'flex flex-row items-center space-x-2 mt-1.5 pe-4',
+        'vertical'   => 'flex flex-col gap-2 mt-1',
+    ],
+    'required' => "after:content-['*'] after:text-red-500 before:mr-2",
+    'hover_pointer' => 'hover:cursor-pointer hover:opacity-80',
 ];
 
 return [
-    'disk' => 'media',
+    /**
+     * --------------------------------------------------------------------------
+     * File Upload Disk Configuration
+     * --------------------------------------------------------------------------
+     *
+     * Defines the storage disk, size limits, and allowed file types for X-Form uploads.
+     *
+     * Keys:
+     *  - 'name'                  : The storage disk to use (default: 'media').
+     *  - 'filesize'              : Maximum allowed file size per upload (in KB).
+     *                              If null, the Livewire default max upload size
+     *                              is used. If set higher than Livewire’s limit,
+     *                              the upload will fail before validation. Setting
+     *                              a lower value further restricts uploads.
+     *  - 'mime_types'            : Comma-separated list of allowed file extensions.
+     *  - 'virus_scanner_command' : Optional command used to scan uploaded files
+     *                              for viruses (e.g. 'clamdscan').
+     *
+     * Values can be configured via environment variables where applicable.
+     */
+    'disk' => [
+        'name' => env('XFORM_DISK_NAME', 'media'),
+        'filesize' => null,
+        'mime_types' => 'jpg,jpeg,png,gif,webp,svg,ico,pdf,doc,docx,xls,xlsx,csv,txt,rtf,ppt,pptx,avi,mp4,webm,mov,mp3,wav,ogg',
+        'virus_scanner_command' => env('XFORM_VIRUS_SCANNER_COMMAND'),
+    ],
 
-    'mime_types' => 'jpeg,png,jpg,gif,webp,doc,docx,xls,xlsx,pdf,mp4',
-
-    //The site of icons
+    // Default icon size for X-Form components
     'icon_size' => $icon_size,
 
-    // Label
-    // Label
+    // Required Fields classes
+    'required' => $base['required'],
+
+    // Label Classes
     'label' => implode(' ', [
-        'block',
-        'capitalize',
-        'w-full',
-        'mb-1',
-        'tracking-wider',
-        'font-medium',
-        'opacity-90',
-        $base['text_color'],
-        $base['text_size'],
+        'block capitalize w-full mb-1 tracking-wider font-medium opacity-90',
+        $base['typography']['text_color'],
+        $base['typography']['text_size'],
     ]),
 
-    'required' => "after:content-['*'] after:text-red-500 before:mr-2",
-
-    // Inputs
-    'item' => implode(' ', [
-        $base['text_size'],
-        $base['text_color'],
-    ]),
-
+    // Input Classes
     'input' => implode(' ', [
-        $base['flex'],
-        'w-full',
-        'p-2',
-        $base['min_height']['input'],
-        $base['text_size'],
-        $base['text_color'],
-        $base['bg'],
-        $base['border'],
-        $base['rounded'],
-        $base['focus'],
+        $base['layout']['flex_center'],
+        'w-full p-2',
+        $base['inputs']['min_height']['input'],
+        $base['typography']['text_size'],
+        $base['typography']['text_color'],
+        $base['inputs']['bg'],
+        $base['inputs']['border'],
+        $base['layout']['rounded'],
+        $base['inputs']['focus'],
     ]),
 
+    // Textarea Classes
     'textarea' => implode(' ', [
-        $base['flex'],
-        'w-full',
-        'p-2',
-        $base['text_size'],
-        $base['text_color'],
-        $base['bg'],
-        $base['border'],
-        $base['rounded'],
-        $base['focus'],
+        $base['layout']['flex_center'],
+        'w-full p-2',
+        $base['typography']['text_size'],
+        $base['typography']['text_color'],
+        $base['inputs']['bg'],
+        $base['inputs']['border'],
+        $base['layout']['rounded'],
+        $base['inputs']['focus'],
     ]),
 
+    // Dropdown Classes
     'dropdown' => [
-        'background' => 'scrollbar-thin min-w-48 py-2 px-0 text-sm text-left list-none rounded-md shadow-lg backdrop-blur-md bg-white/50 dark:bg-black/50 bg-clip-padding border-gray-400 text-gray-500 dark:text-dark-100 absolute w-full overflow-x-hidden overflow-y-auto',
+        'background' => 'scrollbar-thin min-w-48 py-2 px-0 text-sm text-left list-none rounded-md shadow-lg backdrop-blur-md bg-white/50 dark:bg-black/50 bg-clip-padding border-gray-400 text-gray-500 dark:text-dark-100 absolute w-full overflow-x-hidden overflow-y-auto z-50',
         'input' => implode(' ', [
-            $base['flex'],
-            'w-full',
-            'p-2',
-            $base['text_size'],
-            $base['text_color'],
-            $base['bg'],
-            $base['border'],
-            $base['rounded'],
-            $base['focus'],
-            'hover:cursor-pointer',
-            'hover:opacity-80',
+            $base['layout']['flex_center'],
+            'w-full p-2',
+            $base['typography']['text_size'],
+            $base['typography']['text_color'],
+            $base['inputs']['bg'],
+            $base['inputs']['border'],
+            $base['layout']['rounded'],
+            $base['inputs']['focus'],
+            $base['hover_pointer'],
         ]),
-
         'item' => implode(' ', [
-            'flex',
-            'items-center',
-            'w-full',
-            'text-sm',
-            'text-left',
-            'gap-3',
-            'pl-4',
-            'py-2',
-            'clear-both',
-            $base['text_size'],
-            $base['text_color'],
-            'capitalize',
-            'font-normal',
-            'whitespace-nowrap',
-            'border-none',
-            'rounded-none',
-            'hover:cursor-pointer',
-            'hover:opacity-80',
-            'hover:bg-black/5',
-            'hover:dark:bg-white/10'
+            'flex items-center w-full text-sm text-left gap-3 pl-4 py-2 clear-both capitalize font-normal whitespace-nowrap border-none rounded-none',
+            $base['typography']['text_size'],
+            $base['typography']['text_color'],
+            $base['hover_pointer'],
+            'hover:bg-black/5 hover:dark:bg-white/10',
         ]),
-
         'search' => [
             'border' => 'border-black/30 dark:border-white/30',
         ],
     ],
 
-    // Radio groups
+    // Radio Classes
     'radio' => [
-        'label' => implode(' ', [
-            $base['text_size'],
-            $base['text_color'],
-        ]),
-        'input' => 'relative w-4 h-4 '.$base['check_radio_input'],
-        'horizontal' => $base['choice_horizontal'],
-        'vertical' => $base['choice_vertical'],
+        'label' => implode(' ', [$base['typography']['text_size'], $base['typography']['text_color']]),
+        'input' => 'relative w-4 h-4 '.$base['check_radio'],
+        'horizontal' => $base['choice']['horizontal'],
+        'vertical' => $base['choice']['vertical'],
     ],
 
-    // Checkbox and radio groups
+    // Checkbox Classes
     'checkbox' => [
         'div' => 'flex items-center space-x-2',
-        'label' => 'relative w-5 h-5 '.$base['check_radio_input'],
+        'label' => 'relative w-5 h-5 '.$base['check_radio'],
         'input' => 'peer hidden',
-        'horizontal' => $base['choice_horizontal'],
-        'vertical' => 'flex flex-col gap-1 mt-1', // override gap-2 if needed
+        'horizontal' => $base['choice']['horizontal'],
+        'vertical' => 'flex flex-col gap-1 mt-1',
         'empty_message' => 'capitalize text-zinc-500 dark:text-zinc-300',
         'group' => [
             'label' => 'dark:text-zinc-200 font-bold hover:cursor-pointer relative mb-1',
         ],
-        'title' => "{$base['text_color']} text-xs",
-        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 stroke-black/80 dark:stroke-white/70 opacity-0 peer-checked:opacity-100 transition lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>'
+        'title' => "{$base['typography']['text_color']} text-xs",
+        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 stroke-black/80 dark:stroke-white/70 opacity-0 peer-checked:opacity-100 transition lucide lucide-check-icon"><path d="M20 6 9 17l-5-5"/></svg>',
     ],
 
-
+    // File Upload Classes
     'upload' => [
         'button' => implode(' ', [
-            $base['flex'],
-            $base['text_color'],
-            $base['text_size'],
-            'mt-1.5',
-            'file:cursor-pointer',
-            'file:mr-4',
-            'file:py-2',
-            'file:px-4',
-            'file:rounded-lg',
-            'file:border-0',
-            'file:text-sm',
-            'file:font-semibold',
-            'file:bg-black/5',
-            'dark:file:bg-white/10',
-            'file:text-black/60',
-            'dark:file:text-white',
-            'hover:file:bg-black/10',
-            'dark:hover:file:bg-white/20',
+            $base['layout']['flex_center'],
+            $base['typography']['text_color'],
+            $base['typography']['text_size'],
+            'mt-1.5 file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-black/5 dark:file:bg-white/10 file:text-black/60 dark:file:text-white hover:file:bg-black/10 dark:hover:file:bg-white/20',
         ]),
-
         'dropzone' => [
             'button' => implode(' ', [
-                $base['flex'],
-                $base['rounded'],
-                'flex-col',
-                'items-center',
-                'justify-center',
-                'w-full',
-                'h-64',
-                'border',
-                'border-dashed',
-                'border-black/90',
-                'dark:border-white/90',
-                'hover:cursor-pointer',
-                'bg-transparent',
-                'hover:bg-white/10',
-                'dark:hover:bg-black/10',
+                $base['layout']['flex_center'],
+                $base['layout']['rounded'],
+                'flex-col items-center justify-center w-full h-64 border border-dashed border-black/90 dark:border-white/90 hover:cursor-pointer bg-transparent hover:bg-white/10 dark:hover:bg-black/10',
             ]),
-            'title' => implode(' ', [
-                $base['text_color'],
-                $base['text_size'],
-            ]),
-            'subtitle' => implode(' ', [
-                $base['text_color'],
-                $base['text_size'],
-            ]),
-            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-8 fill-none stroke-black/80 dark:stroke-white/80 lucide lucide-cloud-upload-icon lucide-cloud-upload"><path d="M12 13v8"/><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m8 17 4-4 4 4"/></svg>',
+            'title' => implode(' ', [$base['typography']['text_color'], $base['typography']['text_size']]),
+            'subtitle' => implode(' ', [$base['typography']['text_color'], $base['typography']['text_size']]),
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-8 fill-none stroke-black/80 dark:stroke-white/80 lucide lucide-cloud-upload-icon"><path d="M12 13v8"/><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m8 17 4-4 4 4"/></svg>',
         ],
     ],
 
-    // Error messages for input
+    // Error Message Classes
     'error' => 'mt-1 text-sm text-red-500',
 
-    // Disabled field styling
+    // Disabled Input Classes
     'disabled' => [
         'class' => implode(' ', [
-            $base['flex'],
-            'w-full',
-            'text-start',
-            'truncate',
-            'p-2',
-            $base['min_height']['disabled'],
-            $base['disabled_bg'],
-            $base['disabled_text'],
-            $base['rounded'],
+            $base['layout']['flex_center'],
+            'w-full text-start truncate p-2',
+            $base['inputs']['min_height']['disabled'],
+            $base['states']['disabled_bg'],
+            $base['states']['disabled_text'],
+            $base['layout']['rounded'],
             'space-x-2',
         ]),
         'style' => '',
-        'action' => 'w-full hover:opacity-80 '.$base['transition'],
+        'action' => 'w-full hover:opacity-80 '.$base['layout']['transition'],
         'divider' => 'mx-2 h-5 w-px bg-black/10 dark:bg-white/10',
     ],
 
@@ -264,6 +242,8 @@ return [
         'map' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="'.$icon_size.' lucidelucide-map-pin-icon lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>',
 
         'info' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="'.$icon_size.' lucidelucide-badge-info-icon lucide-badge-info"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>',
+
+        'folder' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="'.$icon_size.' lucide lucide-folder-icon lucide-folder"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>',
     ],
 
     /**

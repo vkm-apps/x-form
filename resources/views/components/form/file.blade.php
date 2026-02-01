@@ -58,6 +58,10 @@
                     >
                         {{ $button }}
                     </button>
+                @elseif($label)
+                    <div class="{{ config('x-form.label') }}">
+                        {!! $label !!}
+                    </div>
                 @else
                     {{ $slot }}
                 @endif
