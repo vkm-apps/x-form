@@ -14,9 +14,16 @@
 
     {{-- Fallback: Standard Disabled Block --}}
     @php
+        if ($copy ?? false) {
+            $valueHtml = '<span x-show="!copied">' . ($slot->isNotEmpty() ? $slot : $value) . '</span>' .
+                         '<span x-cloak x-show="copied" class="text-emerald-600 dark:text-emerald-400">Copied to clipboard</span>';
+        } else {
+            $valueHtml = ($slot->isNotEmpty() ? $slot : $value);
+        }
+
         $content = '<div class="flex items-center">'
-            . (!$currency && $icon ? $icon . '<div class="' . config('x-form.disabled.divider') . '"></div>' : $icon)
-            . ($slot->isNotEmpty() ? $slot : $value)
+            . ($icon ? $icon . '<div class="' . config('x-form.disabled.divider') . '"></div>' : '')
+            . $valueHtml
             . '</div>';
     @endphp
 
@@ -32,9 +39,7 @@
         {!! $content !!}
     @endif
 
-
-
-{{-- Append --}}
+    {{-- Append --}}
     {{ $append }}
 </div>
 

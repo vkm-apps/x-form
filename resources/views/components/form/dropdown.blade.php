@@ -62,7 +62,7 @@
                     'class' => 'items-center gap-2 px-3!'
                 ])
             }}
-            :class="{'opacity-0': opened}"
+            @if($searchable && !$inline) x-show="!opened" @endif
             @if(!$searchable) @click.outside="opened = false" @endif
         >
             @if($icon)
@@ -119,7 +119,6 @@
                 {{ $attributes->class([
                         config('x-form.dropdown.input'),
                         config('x-form.invalid') => $errors->has($rule),
-                        'opacity-95 absolute top-0 left-0'
                     ])
                  }}
                 x-model="search"
@@ -130,9 +129,9 @@
         @endif
 
         <div
-            class="{{ config('x-form.dropdown.background') }}"
+            class="{{ config('x-form.dropdown.background') }} z-[1040]"
             aria-labelledby="{{ 'btn_' . $uuid }}"
-            style="min-width: {{ $minWidth }}; max-height: {{ $maxHeight }}; z-index: 1040;"
+            style="min-width: {{ $minWidth }}; max-height: {{ $maxHeight }};"
             x-show="opened"
             x-cloak
         >
@@ -142,8 +141,7 @@
                     <input
                         x-ref="searchInput"
                         type="search"
-                        class="form-control opacity-90"
-                        style="border-radius: 0;"
+                        class="form-control opacity-90 rounded-none"
                         x-model="search"
                         x-show="opened"
                         @click.outside="opened = false"

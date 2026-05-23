@@ -29,16 +29,28 @@ class Disabled extends Component
         $this->setIcon();
     }
 
+    public ?string $copyText = null;
+
     private function setIcon(): void
     {
+        if ($this->currency) {
+            $symbol = $this->getCurrencyIcon();
+            $rawSymbol = html_entity_decode($symbol, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $this->copyText = $rawSymbol . ' ' . $this->value;
+            $this->value = "<span class=\"font-medium pe-1\">{$symbol}</span>" . $this->value;
+        } else {
+            $this->copyText = $this->value;
+        }
+
         if (!$this->icon) {
             $this->icon = $this->getIconFromAttributes();
         }
 
         if ($this->icon) {
             $this->renderIcon();
-            $this->renderButton();
         }
+
+        $this->renderButton();
     }
 
     /**
@@ -48,10 +60,6 @@ class Disabled extends Component
      */
     private function getIconFromAttributes(): ?string
     {
-        if ($this->currency) {
-           return $this->getCurrencyIcon();
-        }
-
         return match (true) {
             $this->copy => config('x-form.icons.copy'),
             $this->link => config('x-form.icons.link'),
@@ -63,18 +71,9 @@ class Disabled extends Component
         };
     }
 
-    private function getCurrencyIcon():? string
+    private function getCurrencyIcon(): ?string
     {
-        return match (true) {
-            $this->currency == 'euro' => config('x-form.currency.eur'),
-            $this->currency == 'dollar' => config('x-form.currency.dollar'),
-            $this->currency == 'pound' => config('x-form.currency.pound'),
-            $this->currency == 'ruble' => config('x-form.currency.ruble'),
-            $this->currency == 'yen' => config('x-form.currency.yen'),
-            $this->currency == 'indian' => config('x-form.currency.indian'),
-            $this->currency == 'bitcoin' => config('x-form.currency.bitcoin'),
-            default => config('x-form.icons.coins'),
-        };
+        return config("x-form.currency.currency.{$this->currency}", config('x-form.currency.currency.coins'));
     }
 
     /**
@@ -101,9 +100,10 @@ class Disabled extends Component
             $this->wrapper_tag = 'button';
             $this->wrapper_attributes = [
                 'type' => 'button',
-                '@click' => "window.navigator.clipboard.writeText('" . e($this->value) . "'); success('Copied!')",
+                'x-data' => '{ copied: false }',
+                '@click' => "window.navigator.clipboard.writeText('" . addslashes($this->copyText) . "'); copied = true; setTimeout(() => copied = false, 1000);",
                 'class' => config('x-form.disabled.action'),
-                'aria-label' => "Click to Copy {$this->value}",
+                'aria-label' => "Click to Copy {$this->copyText}",
             ];
         } elseif ($this->link) {
             $this->wrapper_tag = 'a';

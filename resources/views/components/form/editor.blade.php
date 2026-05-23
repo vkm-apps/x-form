@@ -1,6 +1,7 @@
 @props(['icon_size' => 'size-5'])
 
 <div
+    wire:submit.prevent="save" class="p-4"
     x-data="editor('{{ $uuid }}', '{{ $model }}', $wire, '{{ $watchFor }}')"
     @edit-image="image.openImageEditor($event)"
     @insert-image="image.insertImage($event)"
@@ -22,14 +23,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Paragraph Format') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M360-160v-240q-83 0-141.5-58.5T160-600q0-83 58.5-141.5T360-800h360v80h-80v560h-80v-560H440v560h-80Z" />
-            </svg>
+            <x-form.icon name="paragraph" :class="$icon_size" />
         </button>
 
         {{-- HEADINGS --}}
@@ -41,14 +35,7 @@
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Change headings (H1,H2,H3...)') }}"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 -960 960 960"
-                    fill="currentColor"
-                    class="{{ $icon_size }}"
-                >
-                    <path d="M420-160v-520H200v-120h560v120H540v520H420Z" />
-                </svg>
+                <x-form.icon name="headings" :class="$icon_size" />
             </button>
 
             <div
@@ -78,9 +65,7 @@
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Text Cases') }}"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="size-6">
-                    <path d="m131-252 165-440h79l165 440h-76l-39-112H247l-40 112h-76Zm139-176h131l-64-182h-4l-63 182Zm395 186q-51 0-81-27.5T554-342q0-44 34.5-72.5T677-443q23 0 45 4t38 11v-12q0-29-20.5-47T685-505q-23 0-42 9.5T610-468l-47-35q24-29 54.5-43t68.5-14q69 0 103 32.5t34 97.5v178h-63v-37h-4q-14 23-38 35t-53 12Zm12-54q35 0 59.5-24t24.5-56q-14-8-33.5-12.5T689-393q-32 0-50 14t-18 37q0 20 16 33t40 13Z" />
-                </svg>
+                <x-form.icon name="textcase" class="size-6" />
             </button>
 
             <div
@@ -118,14 +103,7 @@
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Text Size') }}"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="{{ $icon_size }}"
-                    viewBox="0 -960 960 960"
-                    fill="currentColor"
-                >
-                    <path d="M280-160v-520H80v-120h520v120H400v520H280Zm360 0v-320H520v-120h360v120H760v320H640Z" />
-                </svg>
+                <x-form.icon name="fontsize" :class="$icon_size" />
             </button>
 
             <div
@@ -154,14 +132,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Bold') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-                class="{{ $icon_size }}"
-            >
-                <path d="M272-200v-560h221q65 0 120 40t55 111q0 51-23 78.5T602-491q25 11 55.5 41t30.5 90q0 89-65 124.5T501-200H272Zm121-112h104q48 0 58.5-24.5T566-372q0-11-10.5-35.5T494-432H393v120Zm0-228h93q33 0 48-17t15-38q0-24-17-39t-44-15h-95v109Z" />
-            </svg>
+            <x-form.icon name="bold" :class="$icon_size" />
         </button>
 
         {{-- ITALIC --}}
@@ -172,14 +143,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Italic') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M200-200v-100h160l120-360H320v-100h400v100H580L460-300h140v100H200Z" />
-            </svg>
+            <x-form.icon name="italic" :class="$icon_size" />
         </button>
 
         {{-- UNDERLINE --}}
@@ -190,14 +154,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Underline') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M200-120v-80h560v80H200Zm280-160q-101 0-157-63t-56-167v-330h103v336q0 56 28 91t82 35q54 0 82-35t28-91v-336h103v330q0 104-56 167t-157 63Z" />
-            </svg>
+            <x-form.icon name="underline" :class="$icon_size" />
         </button>
 
         {{-- STRIKETHROUGH --}}
@@ -208,14 +165,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Strikethrough') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M80-400v-80h800v80H80Zm340-160v-120H200v-120h560v120H540v120H420Zm0 400v-160h120v160H420Z" />
-            </svg>
+            <x-form.icon name="strikethrough" :class="$icon_size" />
         </button>
 
         {{-- FONT SUPERSCRIPT --}}
@@ -225,14 +175,7 @@
             @click="action.toggleSuperscript()"
             title="{{ __('Superscript') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M760-600v-80q0-17 11.5-28.5T800-720h80v-40H760v-40h120q17 0 28.5 11.5T920-760v40q0 17-11.5 28.5T880-680h-80v40h120v40H760ZM235-160l185-291-172-269h106l124 200h4l123-200h107L539-451l186 291H618L482-377h-4L342-160H235Z" />
-            </svg>
+            <x-form.icon name="superscript" :class="$icon_size" />
         </button>
 
         {{-- FONT SUBSCRIPT --}}
@@ -242,14 +185,7 @@
             @click="action.toggleSubscript()"
             title="{{ __('Subscript') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M760-160v-80q0-17 11.5-28.5T800-280h80v-40H760v-40h120q17 0 28.5 11.5T920-320v40q0 17-11.5 28.5T880-240h-80v40h120v40H760Zm-525-80 185-291-172-269h106l124 200h4l123-200h107L539-531l186 291H618L482-457h-4L342-240H235Z" />
-            </svg>
+            <x-form.icon name="subscript" :class="$icon_size" />
         </button>
 
         {{-- CODE --}}
@@ -259,14 +195,7 @@
             @click="action.toggleFormat('code')"
             title="{{ __('Code Block') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="m384-336 56-57-87-87 87-87-56-57-144 144 144 144Zm192 0 144-144-144-144-56 57 87 87-87 87 56 57ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z" />
-            </svg>
+            <x-form.icon name="code" :class="$icon_size" />
         </button>
 
         <div>
@@ -278,14 +207,7 @@
                 x-ref="text_picker"
                 title="{{ __('Text Color') }}"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="{{ $icon_size }}"
-                    viewBox="0 -960 960 960"
-                    fill="currentColor"
-                >
-                    <path d="M80 0v-160h800V0H80Zm140-280 210-560h100l210 560h-96l-50-144H368l-52 144h-96Zm176-224h168l-82-232h-4l-82 232Z" />
-                </svg>
+                <x-form.icon name="textcolor" :class="$icon_size" />
             </button>
 
             {{-- BG COLOR --}}
@@ -296,14 +218,7 @@
                 x-ref="bg_picker"
                 title="{{ __('Background Color') }}"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="{{ $icon_size }}"
-                    viewBox="0 -960 960 960"
-                    fill="currentColor"
-                >
-                    <path d="m247-904 57-56 343 343q23 23 23 57t-23 57L457-313q-23 23-57 23t-57-23L153-503q-23-23-23-57t23-57l190-191-96-96Zm153 153L209-560h382L400-751Zm360 471q-33 0-56.5-23.5T680-360q0-21 12.5-45t27.5-45q9-12 19-25t21-25q11 12 21 25t19 25q15 21 27.5 45t12.5 45q0 33-23.5 56.5T760-280ZM80 0v-160h800V0H80Z" />
-                </svg>
+                <x-form.icon name="backgroundcolor" :class="$icon_size" />
             </button>
         </div>
 
@@ -316,14 +231,7 @@
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Text Alignment') }}"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="{{ $icon_size }}"
-                    viewBox="0 -960 960 960"
-                    fill="currentColor"
-                >
-                    <path d="M160-200v-80h400v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Z" />
-                </svg>
+                <x-form.icon name="alignment" :class="$icon_size" />
             </button>
 
             <div
@@ -336,14 +244,7 @@
                     @click="action.alignLeft(), open = false"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="{{ $icon_size }}"
-                        viewBox="0 -960 960 960"
-                        fill="currentColor"
-                    >
-                        <path d="M120-120v-80h720v80H120Zm0-160v-80h480v80H120Zm0-160v-80h720v80H120Zm0-160v-80h480v80H120Zm0-160v-80h720v80H120Z" />
-                    </svg>
+                    <x-form.icon name="alignleft" :class="$icon_size" />
                 </button>
 
                 <button
@@ -351,14 +252,7 @@
                     @click="action.alignCenter(), open = false"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="{{ $icon_size }}"
-                        viewBox="0 -960 960 960"
-                        fill="currentColor"
-                    >
-                        <path d="M120-120v-80h720v80H120Zm160-160v-80h400v80H280ZM120-440v-80h720v80H120Zm160-160v-80h400v80H280ZM120-760v-80h720v80H120Z" />
-                    </svg>
+                    <x-form.icon name="aligncenter" :class="$icon_size" />
                 </button>
 
                 <button
@@ -366,14 +260,7 @@
                     @click="action.alignRight(), open = false"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="{{ $icon_size }}"
-                        viewBox="0 -960 960 960"
-                        fill="currentColor"
-                    >
-                        <path d="M120-760v-80h720v80H120Zm240 160v-80h480v80H360ZM120-440v-80h720v80H120Zm240 160v-80h480v80H360ZM120-120v-80h720v80H120Z" />
-                    </svg>
+                    <x-form.icon name="alignright" :class="$icon_size" />
                 </button>
             </div>
         </div>
@@ -405,14 +292,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Bullet List') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M360-200v-80h480v80H360Zm0-240v-80h480v80H360Zm0-240v-80h480v80H360ZM200-160q-33 0-56.5-23.5T120-240q0-33 23.5-56.5T200-320q33 0 56.5 23.5T280-240q0 33-23.5 56.5T200-160Zm0-240q-33 0-56.5-23.5T120-480q0-33 23.5-56.5T200-560q33 0 56.5 23.5T280-480q0 33-23.5 56.5T200-400Zm0-240q-33 0-56.5-23.5T120-720q0-33 23.5-56.5T200-800q33 0 56.5 23.5T280-720q0 33-23.5 56.5T200-640Z" />
-            </svg>
+            <x-form.icon name="ul" :class="$icon_size" />
         </button>
 
         {{-- NUMBERED LIST --}}
@@ -422,59 +302,253 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Numbered List') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M120-80v-60h100v-30h-60v-60h60v-30H120v-60h120q17 0 28.5 11.5T280-280v40q0 17-11.5 28.5T240-200q17 0 28.5 11.5T280-160v40q0 17-11.5 28.5T240-80H120Zm0-280v-110q0-17 11.5-28.5T160-510h60v-30H120v-60h120q17 0 28.5 11.5T280-560v70q0 17-11.5 28.5T240-450h-60v30h100v60H120Zm60-280v-180h-60v-60h120v240h-60Zm180 440v-80h480v80H360Zm0-240v-80h480v80H360Zm0-240v-80h480v80H360Z" />
-            </svg>
+            <x-form.icon name="ol" :class="$icon_size" />
         </button>
 
-        {{-- LETTER LIST --}}
         <button
             type="button"
             @click="action.toggleList('ol', 'lower-alpha')"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Letter List') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="{{ $icon_size }} icon-tabler icons-tabler-outline icon-tabler-list-letters"
-            >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M11 6h9" />
-                <path d="M11 12h9" />
-                <path d="M11 18h9" />
-                <path d="M4 10v-4.5a1.5 1.5 0 0 1 3 0v4.5" />
-                <path d="M4 8h3" />
-                <path d="M4 20h1.5a1.5 1.5 0 0 0 0 -3h-1.5h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6z" />
-            </svg>
+            <x-form.icon name="letter_list" :class="$icon_size" />
         </button>
 
         {{-- TABLE --}}
         <button
             type="button"
-            @click="action.insertTable()"
+            x-ref="tableBtn"
+            @click="table.insert()"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Insert Table') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm240-240H200v160h240v-160Zm80 0v160h240v-160H520Zm-80-80v-160H200v160h240Zm80 0h240v-160H520v160ZM200-680h560v-80H200v80Z" />
-            </svg>
+            <x-form.icon name="table" :class="$icon_size" />
         </button>
+
+        <div
+            x-show="table.showModal"
+            x-transition.opacity.scale
+            class="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-1000"
+            x-cloak
+        >
+            <div class="bg-white w-full max-w-7xl max-h-screen rounded-xl shadow-xl p-6 space-y-6 overflow-auto">
+                <!-- ROW 1: rows + columns -->
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="text-sm font-medium">Table Style</label>
+                        <select
+                            x-model="table.tableStyle"
+                            @change="table.updateTableClasses()"
+                            class="{{ config('x-form.dropdown.input') }}"
+                        >
+                            <option value="basic">Basic</option>
+                            <option value="bordered">Bordered</option>
+                            <option value="striped-rows">Striped Rows</option>
+                            <option value="striped-columns">Striped Columns</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium">Columns</label>
+                        <input
+                            type="number" min="1"
+                            x-model.number="table.colCount"
+                            @input="table.generateColumns()"
+                            class="{{ config('x-form.input') }}"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium">Rows</label>
+                        <input
+                            type="number" min="1"
+                            x-model.number="table.rows"
+                            @input="table.generateColumns()"
+                            class="{{ config('x-form.input') }}"
+                        >
+                    </div>
+                </div>
+
+                <!-- ROW 2: classes + styles -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                    <div><label>Table Classes</label><input
+                            placeholder="table classes"
+                            x-model="table.customClasses.table"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                    <div><label>Table Styles</label><input
+                            placeholder="table styles"
+                            x-model="table.customStyles.table"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                    <div><label>Thead Classes</label><input
+                            placeholder="thead classes"
+                            x-model="table.customClasses.thead"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                    <div><label>Thead Styles</label><input
+                            placeholder="thead styles"
+                            x-model="table.customStyles.thead"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                    <div><label>Th Classes</label><input
+                            placeholder="th classes"
+                            x-model="table.customClasses.th"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                    <div><label>Th Styles</label><input
+                            placeholder="th styles"
+                            x-model="table.customStyles.th"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                    <div><label>Tbody Classes</label><input
+                            placeholder="tbody classes"
+                            x-model="table.customClasses.tbody"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                    <div><label>Tbody Styles</label><input
+                            placeholder="tbody styles"
+                            x-model="table.customStyles.tbody"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                    <div><label>Td Classes</label><input
+                            placeholder="td classes"
+                            x-model="table.customClasses.td"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                    <div><label>Td Styles</label><input
+                            placeholder="td styles"
+                            x-model="table.customStyles.td"
+                            class="{{ config('x-form.input') }}"
+                        /></div>
+                </div>
+
+                <!-- PREVIEW -->
+                <div>
+                    <h3 class="text-sm font-medium mb-2">Preview</h3>
+
+                    <div class="overflow-auto">
+                        <table :class="table.customClasses.table" :style="table.customStyles.table">
+                            <thead :class="table.customClasses.thead" :style="table.customStyles.thead">
+                                <tr :class="table.customClasses.tr">
+                                    <template x-for="(col, i) in table.columns.header" :key="i">
+                                        <th :class="table.customClasses.th" :style="table.customStyles.th">
+                                            <input
+                                                type="text"
+                                                x-model="table.columns.header[i]"
+                                                class="w-full bg-transparent outline-none"
+                                                placeholder="Enter Title"
+                                            >
+                                        </th>
+                                    </template>
+                                </tr>
+                            </thead>
+                            <tbody :class="table.customClasses.tbody" :style="table.customStyles.tbody">
+                                <template x-for="(row, r) in table.bodyRows" :key="r">
+                                    <tr :class="table.customClasses.tr">
+                                        <template x-for="(col, c) in row" :key="c">
+                                            <td
+                                                :class="table.customClasses.td"
+                                                :style="table.customStyles.td"
+                                                class="text-sm text-gray-600"
+                                            >
+                                                <input
+                                                    type="text"
+                                                    x-model="table.bodyRows[r][c]"
+                                                    class="w-full bg-transparent outline-none"
+                                                    placeholder="Enter Content"
+                                                >
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="flex justify-end gap-2">
+                    <button
+                        type="button" @click="table.showModal = false"
+                        class="px-4 py-2 bg-gray-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg hover:bg-gray-200 dark:hover:bg-zinc-700 transition"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="button" @click="table.add()"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                        x-text="table.activeTable ? 'Update Table' : 'Insert'"
+                    >
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {{-- TABLE CONTEXT MENU --}}
+        <div
+            id="{{ $uuid }}_table_context_menu"
+            x-show="table.tableContext.show"
+            x-transition.opacity.duration.150ms
+            :style="`position: fixed; left: ${table.tableContext.x}px; top: ${table.tableContext.y}px;`"
+            class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-xl rounded-lg p-1.5 space-y-0.5 z-[9999] w-48 text-sm select-none"
+            @click.away="table.tableContext.show = false"
+            x-cloak
+        >
+            <button type="button" @click="table.addRow('above')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                </svg>
+                Add Row Above
+            </button>
+            <button type="button" @click="table.addRow('below')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                Add Row Below
+            </button>
+            <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
+            <button type="button" @click="table.addCol('left')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Add Column Left
+            </button>
+            <button type="button" @click="table.addCol('right')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+                Add Column Right
+            </button>
+            <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
+            <button type="button" @click="table.openEditModal()" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Table Settings
+            </button>
+            <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
+            <button type="button" @click="table.deleteRow()" class="w-full text-left px-2.5 py-1.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 rounded-md transition duration-150 flex items-center gap-2 hover:cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete Row
+            </button>
+            <button type="button" @click="table.deleteCol()" class="w-full text-left px-2.5 py-1.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 rounded-md transition duration-150 flex items-center gap-2 hover:cursor-pointer">
+                type="button" xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete Column
+            </button>
+        </div>
 
         {{-- LINK INSERT --}}
         <button
@@ -484,14 +558,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Insert Link') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="M680-160v-120H560v-80h120v-120h80v120h120v80H760v120h-80ZM440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm560-40h-80q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480Z" />
-            </svg>
+            <x-form.icon name="link" :class="$icon_size" />
         </button>
 
         {{-- VIDEO INSERT --}}
@@ -502,7 +569,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Insert Embed Video') }}"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" class="{{ $icon_size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video-icon lucide-video"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+            <x-form.icon name="video" :class="$icon_size" />
         </button>
 
         <div
@@ -516,33 +583,43 @@
             >
                 <h2 class="text-lg font-bold mb-4">Add YouTube Video</h2>
                 <div class="flex flex-col gap-4 text-sm">
-                   <div>
-                       <label class="{{ config('x-form.label') }}">YouTube URL:</label>
-                       <div class="p-4 rounded-sm text-sm bg-blue-100 text-blue-900 mb-2">
-                           Please enter a valid YouTube video URL (https://www.youtube.com/embed/VIDEO_ID) or paste the embed iframe code. If you use embed code, make sure to check and adjust the width, height, and styles as needed.
-                       </div>
-                       <textarea x-model="video.youtubeUrl" class="{{ config('x-form.textarea') }}"></textarea>
-                   </div>
+                    <div>
+                        <label class="{{ config('x-form.label') }}">YouTube URL:</label>
+                        <div class="p-4 rounded-sm text-sm bg-blue-100 text-blue-900 mb-2">
+                            Please enter a valid YouTube video URL (https://www.youtube.com/embed/VIDEO_ID) or paste the
+                            embed iframe code. If you use embed code, make sure to check and adjust the width, height,
+                            and styles as needed.
+                        </div>
+                        <textarea x-model="video.youtubeUrl" class="{{ config('x-form.textarea') }}"></textarea>
+                    </div>
 
                     <div>
                         <label class="{{ config('x-form.label') }}">Video Title (Accessibility):</label>
                         <input type="text" x-model="video.videoTitle" class="{{ config('x-form.input') }}">
                     </div>
 
-                   <div>
-                       <label class="{{ config('x-form.label') }}">Custom Classes:</label>
-                       <input type="text" x-model="video.customClasses" class="{{ config('x-form.input') }}">
-                   </div>
+                    <div>
+                        <label class="{{ config('x-form.label') }}">Custom Classes:</label>
+                        <input type="text" x-model="video.customClasses" class="{{ config('x-form.input') }}">
+                    </div>
 
-                   <div>
-                       <label class="{{ config('x-form.label') }}">Custom Styles:</label>
-                       <input type="text" x-model="video.customStyles" class="{{ config('x-form.input') }}">
-                   </div>
+                    <div>
+                        <label class="{{ config('x-form.label') }}">Custom Styles:</label>
+                        <input type="text" x-model="video.customStyles" class="{{ config('x-form.input') }}">
+                    </div>
                 </div>
 
                 <div class="flex justify-end mt-4">
-                    <button type="button" @click="video.showModal = false" class="px-4 py-2 mr-2 bg-gray-300 rounded">{{ __('Cancel') }}</button>
-                    <button type="button" @click="video.add()" class="px-4 py-2 bg-blue-500 text-white rounded">{{ __('Insert') }}</button>
+                    <button
+                        type="button"
+                        @click="video.showModal = false"
+                        class="px-4 py-2 mr-2 bg-gray-300 rounded"
+                    >{{ __('Cancel') }}</button>
+                    <button
+                        type="button"
+                        @click="video.add()"
+                        class="px-4 py-2 bg-blue-500 text-white rounded"
+                    >{{ __('Insert') }}</button>
                 </div>
             </div>
         </div>
@@ -555,14 +632,7 @@
                 class="p-2 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Insert Image from URL') }}"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="{{ $icon_size }}"
-                    viewBox="0 -960 960 960"
-                    fill="currentColor"
-                >
-                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z" />
-                </svg>
+                <x-form.icon name="image" :class="$icon_size" />
             </button>
 
             <div
@@ -904,14 +974,7 @@
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm flex items-center gap-1 text-sm"
             title="{{ __('Clear formatting on the selected content') }}"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="{{ $icon_size }}"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-            >
-                <path d="m528-546-93-93-121-121h486v120H568l-40 94ZM792-56 460-388l-80 188H249l119-280L56-792l56-56 736 736-56 56Z" />
-            </svg>
+            <x-form.icon name="cleanup" :class="$icon_size" />
         </button>
     </div>
 
@@ -921,6 +984,12 @@
         class="p-4 min-h-60 overflow-auto outline-none bg-black/1 dark:bg-white/10 border dark:text-white border-black/5 dark:border-white/20 rounded-b-md [&>img]:hover:cursor-grab [&>img]:active:cursor-grabbing"
         contenteditable="true"
         @input="save()"
+        @click="image.handleClick($event)"
+        @dragstart="image.handleDragStart($event)"
+        @dragend="image.handleDragEnd($event)"
+        @contextmenu="table.handleContextMenu($event)"
+        @keydown.tab.prevent="action.changeIndent(!$event.shiftKey)"
+        @paste.prevent="handlePaste($event)"
         x-ref="editor"
     >
         {!! $content !!}
@@ -928,6 +997,6 @@
 
 
     @error($rule)
-        <div class="{{ config('x-form.error') }}">{!! $message !!}</div>
+    <div class="{{ config('x-form.error') }}">{!! $message !!}</div>
     @enderror
 </div>

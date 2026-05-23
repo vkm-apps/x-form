@@ -13,6 +13,7 @@ use VkmApps\XForm\View\Components\Form\Disabled;
 use VkmApps\XForm\View\Components\Form\Editor;
 use VkmApps\XForm\View\Components\Form\File;
 use VkmApps\XForm\View\Components\Form\FileUrl;
+use VkmApps\XForm\View\Components\Form\Icon;
 use VkmApps\XForm\View\Components\Form\Input;
 use VkmApps\XForm\View\Components\Form\Label;
 use VkmApps\XForm\View\Components\Form\Password;
@@ -32,6 +33,7 @@ class XFormServiceProvider extends ServiceProvider
 
         // Load views for components (Blade components)
         $this->loadViewsFrom(__DIR__.'/../resources/views/components/form', 'x-form');
+        $this->loadViewsFrom(__DIR__.'/../resources/views/components/form', 'form');
 
         // Optionally load general package views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'x-form');
@@ -69,6 +71,7 @@ class XFormServiceProvider extends ServiceProvider
         Blade::component('form.date', Date::class);
         Blade::component('form.editor', Editor::class);
         Blade::component('form.label', Label::class);
+        Blade::component('form.icon', Icon::class);
         Blade::component('form.radio', Radio::class);
         Blade::component('form.select', Select::class);
         Blade::component('form.file', File::class);

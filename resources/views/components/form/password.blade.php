@@ -45,7 +45,7 @@
         @if ($attributes->has('live'))
             wire:model.live="{{ $model }}"
         @elseif ($attributes->has('blur'))
-            wire:model.blur="{{ $model }}"
+            wire:model.live.blur="{{ $model }}"
         @else
             wire:model="{{ $model }}"
         @endif
@@ -59,9 +59,9 @@
         @if ($validate)
             @if ($validate !== 'blur')
                 @keyup="validate"
-        @else
-            @blur="validate"
-        @endif
+            @else
+                @blur="validate"
+            @endif
         @endif
     />
 
