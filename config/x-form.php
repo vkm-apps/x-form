@@ -164,26 +164,26 @@ return [
     'currency' => [
         'currency' => [
             // Original currencies
-            'euro'     => '&euro;',      // € Euro
-            'dollar'  => '&#36;',       // $ US Dollar (also used for CAD, AUD, MXN, SGD, etc.)
-            'pound'   => '&pound;',     // £ British Pound
-            'ruble'   => '&#8381;',     // ₽ Russian Ruble
-            'yen'     => '&yen;',       // ¥ Japanese Yen / Chinese Yuan
-            'indian'  => '&#8377;',     // ₹ Indian Rupee
-            'bitcoin' => '&#8383;',     // ₿ Bitcoin
-            'coins'   => '&curren;',    // ¤ Generic Currency Sign
+            'EUR' => '&euro;',          // € Euro
+            'USD' => '&#36;',           // $ US Dollar (also used for CAD, AUD, MXN, SGD, etc.)
+            'GBP' => '&pound;',         // £ British Pound
+            'RUB' => '&#8381;',         // ₽ Russian Ruble
+            'JPY' => '&yen;',           // ¥ Japanese Yen / Chinese Yuan
+            'INR' => '&#8377;',         // ₹ Indian Rupee
+            'BTC' => '&#8383;',         // ₿ Bitcoin
+            'XBX' => '&curren;',        // ¤ Generic Currency Sign (Using XBX or 'COINS' depending on your framework)
 
-            // Added common currencies
-            'won'     => '&#8361;',     // ₩ South Korean Won
-            'lira'    => '&#8378;',     // ₺ Turkish Lira
-            'baht'    => '&#3647;',     // ฿ Thai Baht
-            'naira'   => '&#8358;',     // ₦ Nigerian Naira
-            'peso'    => '&#8369;',     // ₱ Philippine Peso (Note: Mexican/Latin American pesos generally use '$')
-            'franc'   => '&#8355;',     // ₣ Franc (often used for Swiss Franc, though 'CHF' text is also common)
-            'real'    => 'R&#36;',      // R$ Brazilian Real
-            'rand'    => 'R',           // R South African Rand
-            'dirham'  => '&#1583;.&#1573;', // د.إ UAE Dirham (Arabic characters)
-            'shekel'  => '&#8362;',     // ₪ Israeli New Shekel
+            //  common currencies
+            'KRW' => '&#8361;',         // ₩ South Korean Won
+            'TRY' => '&#8378;',         // ₺ Turkish Lira
+            'THB' => '&#3647;',         // ฿ Thai Baht
+            'NGN' => '&#8358;',         // ₦ Nigerian Naira
+            'PHP' => '&#8369;',         // ₱ Philippine Peso
+            'CHF' => '&#8355;',         // ₣ Swiss Franc
+            'BRL' => 'R&#36;',          // R$ Brazilian Real
+            'ZAR' => 'R',               // R South African Rand
+            'AED' => '&#1583;.&#1573;', // د.إ UAE Dirham
+            'ILS' => '&#8362;',         // ₪ Israeli New Shekel
         ],
     ],
 ];

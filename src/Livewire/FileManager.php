@@ -357,7 +357,25 @@ class FileManager extends Component
     public function deleteSelectedFile(string $file): void
     {
         $disk = $this->disk();
-        $file = str($file)->replace('/', '')->value();
+
+        if (str_contains($file, '..') || str_contains($file, '\\')) {
+            abort(403, 'Path traversal detected.');
+        }
+
+        $file = ltrim($file, '/');
+
+        $disk_root = str($disk->path(''))
+            ->replace(['\\', '//'], '/')
+            ->finish('/')
+            ->value();
+
+        $target_path = str($disk->path($file))
+            ->replace(['\\', '//'], '/')
+            ->value();
+
+        if (!str_starts_with($target_path, $disk_root)) {
+            abort(403, 'File is outside allowed root.');
+        }
 
         if ($disk->exists($file)) {
             $disk->delete($file);

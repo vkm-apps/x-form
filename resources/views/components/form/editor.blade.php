@@ -15,6 +15,7 @@
     <div
         class="flex flex-wrap space-x-2 items-center bg-black/5 dark:bg-white/10 px-3 border border-black/5 dark:border-white/20 border-b-0 shadow rounded-t-md"
         x-cloak
+        wire:ignore
     >
         {{-- PARAGRAPH --}}
         <button
@@ -27,11 +28,14 @@
         </button>
 
         {{-- HEADINGS --}}
-        <div x-data="{ open: false }" @click.outside="open = false">
+        <div>
             <button
                 type="button"
-                x-ref="button"
-                @click="open = ! open"
+                x-ref="headingsButton"
+                data-dropdown-trigger
+                @click="activeDropdown = (activeDropdown === 'headings' ? null : 'headings')"
+                :aria-expanded="activeDropdown === 'headings'"
+                aria-haspopup="true"
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Change headings (H1,H2,H3...)') }}"
             >
@@ -39,15 +43,22 @@
             </button>
 
             <div
-                x-show="open"
-                x-anchor="$refs.button"
-                class="bg-white shadow-lg border border-gray-200 rounded-sm flex flex-col"
+                x-show="activeDropdown === 'headings'"
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="transform opacity-0 scale-95"
+                x-transition:enter-end="transform opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-75"
+                x-transition:leave-start="transform opacity-100 scale-100"
+                x-transition:leave-end="transform opacity-0 scale-95"
+                x-anchor="$refs.headingsButton"
+                data-dropdown-menu
+                class="bg-white shadow-lg border border-gray-200 rounded-sm flex flex-col z-[999]"
             >
                 <template x-for="h in [1,2,3,4,5,6]" :key="h">
                     <button
                         type="button"
-                        @click="action.heading(h), open = false"
-                        class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
+                        @click="action.heading(h), activeDropdown = null"
+                        class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer text-black"
                         :style="{ 'font-size': (30 - (h/0.3)) + 'px' }"
                     >
                         Heading <span x-text="h"></span>
@@ -57,11 +68,14 @@
         </div>
 
         {{-- TEXT CASE CHANGE --}}
-        <div x-data="{ open: false }" @click.outside="open = false">
+        <div>
             <button
                 type="button"
-                x-ref="button"
-                @click="open = ! open"
+                x-ref="textcaseButton"
+                data-dropdown-trigger
+                @click="activeDropdown = (activeDropdown === 'textcase' ? null : 'textcase')"
+                :aria-expanded="activeDropdown === 'textcase'"
+                aria-haspopup="true"
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Text Cases') }}"
             >
@@ -69,25 +83,32 @@
             </button>
 
             <div
-                x-show="open"
-                x-anchor="$refs.button"
-                class="bg-white shadow-lg border border-gray-200 rounded-sm flex flex-col"
+                x-show="activeDropdown === 'textcase'"
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="transform opacity-0 scale-95"
+                x-transition:enter-end="transform opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-75"
+                x-transition:leave-start="transform opacity-100 scale-100"
+                x-transition:leave-end="transform opacity-0 scale-95"
+                x-anchor="$refs.textcaseButton"
+                data-dropdown-menu
+                class="bg-white shadow-lg border border-gray-200 rounded-sm flex flex-col z-[999] text-black"
             >
                 <button
                     type="button"
-                    @click="action.uppercase(), open = false"
+                    @click="action.uppercase(), activeDropdown = null"
                     class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >UPPERCASE
                 </button>
                 <button
                     type="button"
-                    @click="action.lowercase(), open = false"
+                    @click="action.lowercase(), activeDropdown = null"
                     class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >lowercase
                 </button>
                 <button
                     type="button"
-                    @click="action.titlecase(), open = false"
+                    @click="action.titlecase(), activeDropdown = null"
                     class="w-full text-sm px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >Title Case
                 </button>
@@ -95,11 +116,14 @@
         </div>
 
         {{-- FONT SIZE --}}
-        <div x-data="{ open: false }" @click.outside="open = false">
+        <div>
             <button
                 type="button"
-                x-ref="button"
-                @click="open = ! open"
+                x-ref="fontsizeButton"
+                data-dropdown-trigger
+                @click="activeDropdown = (activeDropdown === 'fontsize' ? null : 'fontsize')"
+                :aria-expanded="activeDropdown === 'fontsize'"
+                aria-haspopup="true"
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Text Size') }}"
             >
@@ -107,14 +131,21 @@
             </button>
 
             <div
-                x-show="open"
-                x-anchor="$refs.button"
-                class="bg-white shadow-lg border border-gray-200 rounded-sm flex flex-col"
+                x-show="activeDropdown === 'fontsize'"
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="transform opacity-0 scale-95"
+                x-transition:enter-end="transform opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-75"
+                x-transition:leave-start="transform opacity-100 scale-100"
+                x-transition:leave-end="transform opacity-0 scale-95"
+                x-anchor="$refs.fontsizeButton"
+                data-dropdown-menu
+                class="bg-white shadow-lg border border-gray-200 rounded-sm flex flex-col z-[999] text-black"
             >
                 <template x-for="px in [10,12,14,16,18,20,22]" :key="px">
                     <button
                         type="button"
-                        @click="action.fontsize(px), open = false"
+                        @click="action.fontsize(px), activeDropdown = null"
                         class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                         :style="{ 'font-size': px + 'px' }"
                     >
@@ -223,11 +254,14 @@
         </div>
 
         {{-- TEXT ALIGNMENT --}}
-        <div x-data="{ open: false }" @click.outside="open = false">
+        <div>
             <button
                 type="button"
-                x-ref="button"
-                @click="open = ! open"
+                x-ref="alignmentButton"
+                data-dropdown-trigger
+                @click="activeDropdown = (activeDropdown === 'alignment' ? null : 'alignment')"
+                :aria-expanded="activeDropdown === 'alignment'"
+                aria-haspopup="true"
                 class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
                 title="{{ __('Text Alignment') }}"
             >
@@ -235,13 +269,20 @@
             </button>
 
             <div
-                x-show="open"
-                x-anchor="$refs.button"
-                class="bg-white shadow-lg border border-gray-200 rounded-sm flex flex-col"
+                x-show="activeDropdown === 'alignment'"
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="transform opacity-0 scale-95"
+                x-transition:enter-end="transform opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-75"
+                x-transition:leave-start="transform opacity-100 scale-100"
+                x-transition:leave-end="transform opacity-0 scale-95"
+                x-anchor="$refs.alignmentButton"
+                data-dropdown-menu
+                class="bg-white shadow-lg border border-gray-200 rounded-sm flex flex-col z-[999] text-black"
             >
                 <button
                     type="button"
-                    @click="action.alignLeft(), open = false"
+                    @click="action.alignLeft(), activeDropdown = null"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
                     <x-form.icon name="alignleft" :class="$icon_size" />
@@ -249,7 +290,7 @@
 
                 <button
                     type="button"
-                    @click="action.alignCenter(), open = false"
+                    @click="action.alignCenter(), activeDropdown = null"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
                     <x-form.icon name="aligncenter" :class="$icon_size" />
@@ -257,7 +298,7 @@
 
                 <button
                     type="button"
-                    @click="action.alignRight(), open = false"
+                    @click="action.alignRight(), activeDropdown = null"
                     class="w-full px-5 py-1 hover:bg-gray-100 hover:cursor-pointer"
                 >
                     <x-form.icon name="alignright" :class="$icon_size" />
@@ -317,7 +358,6 @@
         {{-- TABLE --}}
         <button
             type="button"
-            x-ref="tableBtn"
             @click="table.insert()"
             class="p-1 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white hover:cursor-pointer rounded-sm"
             title="{{ __('Insert Table') }}"
@@ -325,230 +365,17 @@
             <x-form.icon name="table" :class="$icon_size" />
         </button>
 
-        <div
-            x-show="table.showModal"
-            x-transition.opacity.scale
-            class="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-1000"
-            x-cloak
-        >
-            <div class="bg-white w-full max-w-7xl max-h-screen rounded-xl shadow-xl p-6 space-y-6 overflow-auto">
-                <!-- ROW 1: rows + columns -->
-                <div class="grid grid-cols-3 gap-4">
-                    <div>
-                        <label class="text-sm font-medium">Table Style</label>
-                        <select
-                            x-model="table.tableStyle"
-                            @change="table.updateTableClasses()"
-                            class="{{ config('x-form.dropdown.input') }}"
-                        >
-                            <option value="basic">Basic</option>
-                            <option value="bordered">Bordered</option>
-                            <option value="striped-rows">Striped Rows</option>
-                            <option value="striped-columns">Striped Columns</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="text-sm font-medium">Columns</label>
-                        <input
-                            type="number" min="1"
-                            x-model.number="table.colCount"
-                            @input="table.generateColumns()"
-                            class="{{ config('x-form.input') }}"
-                        >
-                    </div>
-
-                    <div>
-                        <label class="text-sm font-medium">Rows</label>
-                        <input
-                            type="number" min="1"
-                            x-model.number="table.rows"
-                            @input="table.generateColumns()"
-                            class="{{ config('x-form.input') }}"
-                        >
-                    </div>
-                </div>
-
-                <!-- ROW 2: classes + styles -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                    <div><label>Table Classes</label><input
-                            placeholder="table classes"
-                            x-model="table.customClasses.table"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                    <div><label>Table Styles</label><input
-                            placeholder="table styles"
-                            x-model="table.customStyles.table"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                    <div><label>Thead Classes</label><input
-                            placeholder="thead classes"
-                            x-model="table.customClasses.thead"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                    <div><label>Thead Styles</label><input
-                            placeholder="thead styles"
-                            x-model="table.customStyles.thead"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                    <div><label>Th Classes</label><input
-                            placeholder="th classes"
-                            x-model="table.customClasses.th"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                    <div><label>Th Styles</label><input
-                            placeholder="th styles"
-                            x-model="table.customStyles.th"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                    <div><label>Tbody Classes</label><input
-                            placeholder="tbody classes"
-                            x-model="table.customClasses.tbody"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                    <div><label>Tbody Styles</label><input
-                            placeholder="tbody styles"
-                            x-model="table.customStyles.tbody"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                    <div><label>Td Classes</label><input
-                            placeholder="td classes"
-                            x-model="table.customClasses.td"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                    <div><label>Td Styles</label><input
-                            placeholder="td styles"
-                            x-model="table.customStyles.td"
-                            class="{{ config('x-form.input') }}"
-                        /></div>
-                </div>
-
-                <!-- PREVIEW -->
-                <div>
-                    <h3 class="text-sm font-medium mb-2">Preview</h3>
-
-                    <div class="overflow-auto">
-                        <table :class="table.customClasses.table" :style="table.customStyles.table">
-                            <thead :class="table.customClasses.thead" :style="table.customStyles.thead">
-                                <tr :class="table.customClasses.tr">
-                                    <template x-for="(col, i) in table.columns.header" :key="i">
-                                        <th :class="table.customClasses.th" :style="table.customStyles.th">
-                                            <input
-                                                type="text"
-                                                x-model="table.columns.header[i]"
-                                                class="w-full bg-transparent outline-none"
-                                                placeholder="Enter Title"
-                                            >
-                                        </th>
-                                    </template>
-                                </tr>
-                            </thead>
-                            <tbody :class="table.customClasses.tbody" :style="table.customStyles.tbody">
-                                <template x-for="(row, r) in table.bodyRows" :key="r">
-                                    <tr :class="table.customClasses.tr">
-                                        <template x-for="(col, c) in row" :key="c">
-                                            <td
-                                                :class="table.customClasses.td"
-                                                :style="table.customStyles.td"
-                                                class="text-sm text-gray-600"
-                                            >
-                                                <input
-                                                    type="text"
-                                                    x-model="table.bodyRows[r][c]"
-                                                    class="w-full bg-transparent outline-none"
-                                                    placeholder="Enter Content"
-                                                >
-                                            </td>
-                                        </template>
-                                    </tr>
-                                </template>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- ACTIONS -->
-                <div class="flex justify-end gap-2">
-                    <button
-                        type="button" @click="table.showModal = false"
-                        class="px-4 py-2 bg-gray-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg hover:bg-gray-200 dark:hover:bg-zinc-700 transition"
-                    >
-                        Cancel
-                    </button>
-
-                    <button
-                        type="button" @click="table.add()"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                        x-text="table.activeTable ? 'Update Table' : 'Insert'"
-                    >
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        {{-- TABLE CONTEXT MENU --}}
-        <div
-            id="{{ $uuid }}_table_context_menu"
-            x-show="table.tableContext.show"
-            x-transition.opacity.duration.150ms
-            :style="`position: fixed; left: ${table.tableContext.x}px; top: ${table.tableContext.y}px;`"
-            class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-xl rounded-lg p-1.5 space-y-0.5 z-[9999] w-48 text-sm select-none"
-            @click.away="table.tableContext.show = false"
-            x-cloak
-        >
-            <button type="button" @click="table.addRow('above')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
-                </svg>
-                Add Row Above
-            </button>
-            <button type="button" @click="table.addRow('below')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-                Add Row Below
-            </button>
-            <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
-            <button type="button" @click="table.addCol('left')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-                Add Column Left
-            </button>
-            <button type="button" @click="table.addCol('right')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-                Add Column Right
-            </button>
-            <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
-            <button type="button" @click="table.openEditModal()" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Table Settings
-            </button>
-            <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
-            <button type="button" @click="table.deleteRow()" class="w-full text-left px-2.5 py-1.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 rounded-md transition duration-150 flex items-center gap-2 hover:cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-                Delete Row
-            </button>
-            <button type="button" @click="table.deleteCol()" class="w-full text-left px-2.5 py-1.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 rounded-md transition duration-150 flex items-center gap-2 hover:cursor-pointer">
-                type="button" xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-                Delete Column
-            </button>
-        </div>
+        {{--
+            Auto-inject the singleton table modal on the FIRST editor instance only.
+            @once guarantees PHP renders this block exactly once per page request.
+            x-teleport="body" makes Alpine physically move the div to <body> at runtime,
+            ensuring a clean stacking context (no CSS transform/filter ancestors).
+        --}}
+        @once
+            <template x-teleport="body">
+                @include('x-form::editor-modal')
+            </template>
+        @endonce
 
         {{-- LINK INSERT --}}
         <button
@@ -572,15 +399,17 @@
             <x-form.icon name="video" :class="$icon_size" />
         </button>
 
-        <div
-            x-show="video.showModal"
-            class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-1"
-            wire:ignore
-            x-cloak
-        >
+        <template x-teleport="body">
             <div
-                class="bg-white/80 dark:bg-black/90 backdrop-blur-4xl rounded-2xl shadow max-w-4xl w-full p-8 max-h-screen overflow-y-auto"
+                x-show="video.showModal"
+                x-trap="video.showModal"
+                class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/50 z-[99999]"
+                wire:ignore
+                x-cloak
             >
+                <div
+                    class="bg-white/80 dark:bg-black/90 backdrop-blur-4xl rounded-2xl shadow max-w-4xl w-full p-8 max-h-screen overflow-y-auto"
+                >
                 <h2 class="text-lg font-bold mb-4">Add YouTube Video</h2>
                 <div class="flex flex-col gap-4 text-sm">
                     <div>
@@ -623,6 +452,7 @@
                 </div>
             </div>
         </div>
+        </template>
 
         {{-- IMAGE LINK INSERT --}}
         <div>
@@ -635,15 +465,17 @@
                 <x-form.icon name="image" :class="$icon_size" />
             </button>
 
-            <div
-                x-show="image.showModal"
-                class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-1"
-                wire:ignore
-                x-cloak
-            >
+            <template x-teleport="body">
                 <div
-                    class="bg-white/80 dark:bg-black/90 backdrop-blur-4xl rounded-2xl shadow max-w-4xl w-full p-8 max-h-screen overflow-y-auto"
+                    x-show="image.showModal"
+                    x-trap="image.showModal"
+                    class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/50 z-[99999]"
+                    wire:ignore
+                    x-cloak
                 >
+                    <div
+                        class="bg-white/80 dark:bg-black/90 backdrop-blur-4xl rounded-2xl shadow max-w-4xl w-full p-8 max-h-screen overflow-y-auto"
+                    >
                     {{-- IMAGE INPUTS --}}
                     <div class="w-full my-4" x-data>
                         <label for="image_url" class="{{ config('x-form.label') }}">
@@ -720,7 +552,7 @@
                                         max="1000"
                                         step="1"
                                         x-model="image.width"
-                                        @input="image.changeImageDimensions('w', $el.value)"
+                                        @input.throttle.100ms="image.changeImageDimensions('w', $el.value)"
                                         class="w-full h-2 accent-blue-500"
                                     />
 
@@ -747,7 +579,7 @@
                                         max="1000"
                                         step="1"
                                         x-model="image.height"
-                                        @input="image.changeImageDimensions('h', $el.value)"
+                                        @input.throttle.100ms="image.changeImageDimensions('h', $el.value)"
                                         class="w-full h-2 accent-blue-500"
                                     />
 
@@ -935,7 +767,7 @@
 
                     <button
                         type="button"
-                        @click="$dispatch('insert-image')"
+                        @click="image.insertImage()"
                         class="mt-2 bg-blue-600 border-2 border-blue-600 text-sm text-white font-medium px-3 py-1 rounded hover:cursor-pointer hover:opacity-80"
                         x-text="image.selectedImage ? 'Update Image' : 'Insert Image'"
                     >
@@ -960,7 +792,8 @@
                     </template>
                 </div>
             </div>
-        </div>
+        </template>
+    </div>
 
         {{-- FILE MANAGER INSERT --}}
         @if($withFilemanager)
@@ -978,7 +811,59 @@
         </button>
     </div>
 
+    {{--
+        TABLE CONTEXT MENU
+        Placed outside the x-cloak toolbar to avoid the paint-flash bug where Alpine
+        removes x-cloak from the toolbar (making all children visible) before it has
+        processed x-show on this element. style="display:none" ensures it is invisible
+        from the first paint regardless of x-cloak / Alpine initialization order.
+        Close logic lives in scoped JS handlers in editor.js — @click.away is intentionally
+        absent to prevent cross-editor interference with multiple editors on the same page.
+    --}}
+    <div
+        id="{{ $uuid }}_table_context_menu"
+        x-show="table.tableContext.show"
+        x-transition.opacity.duration.150ms
+        :style="{ position: 'fixed', left: table.tableContext.x + 'px', top: table.tableContext.y + 'px' }"
+        style="display:none"
+        class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-xl rounded-lg p-1.5 space-y-0.5 z-[9999] w-48 text-sm select-none"
+        wire:ignore
+    >
+        <button type="button" @click="table.addRow('above')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+            <x-form.icon name="chevron-up" class="size-4" />
+            Add Row Above
+        </button>
+        <button type="button" @click="table.addRow('below')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+            <x-form.icon name="chevron-down" class="size-4" />
+            Add Row Below
+        </button>
+        <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
+        <button type="button" @click="table.addCol('left')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+            <x-form.icon name="chevron-left" class="size-4" />
+            Add Column Left
+        </button>
+        <button type="button" @click="table.addCol('right')" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+            <x-form.icon name="chevron-right" class="size-4" />
+            Add Column Right
+        </button>
+        <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
+        <button type="button" @click="table.openEditModal()" class="w-full text-left px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition duration-150 flex items-center gap-2 text-zinc-700 dark:text-zinc-300 hover:cursor-pointer">
+            <x-form.icon name="settings" class="size-4" />
+            Table Settings
+        </button>
+        <div class="border-t border-zinc-100 dark:border-zinc-700 my-1"></div>
+        <button type="button" @click="table.deleteRow()" class="w-full text-left px-2.5 py-1.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 rounded-md transition duration-150 flex items-center gap-2 hover:cursor-pointer">
+            <x-form.icon name="trash" class="size-4" />
+            Delete Row
+        </button>
+        <button type="button" @click="table.deleteCol()" class="w-full text-left px-2.5 py-1.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 rounded-md transition duration-150 flex items-center gap-2 hover:cursor-pointer">
+            <x-form.icon name="trash" class="size-4" />
+            Delete Column
+        </button>
+    </div>
+
     {{-- EDITOR --}}
+
     <div
         id="{{ $uuid }}"
         class="p-4 min-h-60 overflow-auto outline-none bg-black/1 dark:bg-white/10 border dark:text-white border-black/5 dark:border-white/20 rounded-b-md [&>img]:hover:cursor-grab [&>img]:active:cursor-grabbing"
@@ -991,6 +876,7 @@
         @keydown.tab.prevent="action.changeIndent(!$event.shiftKey)"
         @paste.prevent="handlePaste($event)"
         x-ref="editor"
+        wire:ignore
     >
         {!! $content !!}
     </div>

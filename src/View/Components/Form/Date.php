@@ -8,16 +8,15 @@ use Illuminate\Contracts\View\View;
 class Date extends FormElement
 {
     public function __construct(
-        public ?string $label = null,
-        public ?string $model = null,
-        public ?string $placeholder = null,
-        public ?string $icon = null,
-        public ?string $type = 'date',
-        public ?bool $required = false,
-        public ?string $tooltip = null,
-        public ?string $help = null,
-        public ?string $rule = null,
-        public ?bool $group = false,
+        public ?string $label    = null,
+        public ?string $model    = null,
+        public ?string $icon     = null,
+        public ?bool   $required = false,
+        public ?string $tooltip  = null,
+        public ?string $help     = null,
+        public ?string $rule     = null,
+        public bool    $range    = false,
+        public string  $locale   = 'en',
     ) {
         parent::__construct();
     }

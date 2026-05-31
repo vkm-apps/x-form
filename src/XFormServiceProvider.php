@@ -11,6 +11,7 @@ use VkmApps\XForm\View\Components\Form\Checkbox;
 use VkmApps\XForm\View\Components\Form\Date;
 use VkmApps\XForm\View\Components\Form\Disabled;
 use VkmApps\XForm\View\Components\Form\Editor;
+use VkmApps\XForm\View\Components\Form\EditorModal;
 use VkmApps\XForm\View\Components\Form\File;
 use VkmApps\XForm\View\Components\Form\FileUrl;
 use VkmApps\XForm\View\Components\Form\Icon;
@@ -70,6 +71,7 @@ class XFormServiceProvider extends ServiceProvider
         Blade::component('form.input', Input::class);
         Blade::component('form.date', Date::class);
         Blade::component('form.editor', Editor::class);
+        Blade::component('form.editor-modal', EditorModal::class);
         Blade::component('form.label', Label::class);
         Blade::component('form.icon', Icon::class);
         Blade::component('form.radio', Radio::class);
