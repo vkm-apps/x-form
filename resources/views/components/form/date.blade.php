@@ -15,6 +15,7 @@
     @endif
 
     @php
+        $liveModifier = $attributes->has('live') ? '.live' : '';
         $localeModifier = $locale !== 'en' ? '.' . $locale : '';
         $inputClass = trim(config('x-form.input') . ($errors->has($rule) ? ' ' . config('x-form.invalid', '') : ''));
     @endphp
@@ -25,7 +26,7 @@
         @if ($model)
             {{-- Livewire mode --}}
             <input
-                x-datepicker{{ $localeModifier }}
+                x-datepicker{{ $liveModifier }}{{ $localeModifier }}
                 data-model="{{ $model }}"
                 type="text"
                 id="{{ $uuid }}"
@@ -35,7 +36,7 @@
         @else
             {{-- Plain form mode: visible text input + hidden ISO input --}}
             <input
-                x-datepicker{{ $localeModifier }}
+                x-datepicker{{ $liveModifier }}{{ $localeModifier }}
                 data-name="{{ $name }}"
                 type="text"
                 id="{{ $uuid }}"
@@ -51,7 +52,7 @@
             @if ($model)
                 {{-- Livewire range mode: both inputs share data-model --}}
                 <input
-                    x-datepicker.range.start{{ $localeModifier }}
+                    x-datepicker.range.start{{ $liveModifier }}{{ $localeModifier }}
                     data-model="{{ $model }}"
                     data-range-group="{{ $uuid }}"
                     type="text"
@@ -59,7 +60,7 @@
                     class="{{ $inputClass }}"
                 />
                 <input
-                    x-datepicker.range.end{{ $localeModifier }}
+                    x-datepicker.range.end{{ $liveModifier }}{{ $localeModifier }}
                     data-model="{{ $model }}"
                     data-range-group="{{ $uuid }}"
                     type="text"
@@ -69,7 +70,7 @@
             @else
                 {{-- Plain form range mode: each has its own hidden input --}}
                 <input
-                    x-datepicker.range.start{{ $localeModifier }}
+                    x-datepicker.range.start{{ $liveModifier }}{{ $localeModifier }}
                     data-name="{{ $name }}_start"
                     data-range-group="{{ $uuid }}"
                     type="text"
@@ -79,7 +80,7 @@
                 <input type="hidden" name="{{ $name }}_start" />
 
                 <input
-                    x-datepicker.range.end{{ $localeModifier }}
+                    x-datepicker.range.end{{ $liveModifier }}{{ $localeModifier }}
                     data-name="{{ $name }}_end"
                     data-range-group="{{ $uuid }}"
                     type="text"
