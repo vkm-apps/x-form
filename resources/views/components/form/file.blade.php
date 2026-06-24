@@ -95,6 +95,10 @@
             </label>
         </div>
     @endif
+
+    @error($rule)
+        <div class="{{ config('x-form.error') }}">{!! $message !!}</div>
+    @enderror
 </div>
 
 {{ $append }}

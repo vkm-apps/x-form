@@ -19,7 +19,7 @@ class Input extends FormElement
         public ?string $rule = null,
         public bool $invalid = false,
         public bool $border = true,
-        public ?bool $group = false,
+        public string|bool|null $group = false,
         public string|bool $validate = false,
     ) {
         parent::__construct();

@@ -7,6 +7,8 @@ use Illuminate\Contracts\View\View;
 
 class Checkbox extends FormElement
 {
+    public bool $isSingle = false;
+
     public function __construct(
         public ?array $list = null,
         public ?int $perColumn = 20,
@@ -26,10 +28,17 @@ class Checkbox extends FormElement
         public bool $required = false,
         public bool $horizontal = false,
         public bool $grouped = false,
+        public bool $group = false,
     ) {
-        $this->list ??= [__('Yes') => 1, __('No') => 0];
+        $this->grouped = $grouped || $group;
+        $this->isSingle = is_null($list) && !$this->grouped;
 
-        $this->total = count($this->list);
+        if ($this->isSingle) {
+            $this->total = 1;
+        } else {
+            $this->list ??= [];
+            $this->total = count($this->list);
+        }
 
         $this->layout ??= $horizontal ? config('x-form.checkbox.horizontal') : config('x-form.checkbox.vertical');
 

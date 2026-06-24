@@ -17,16 +17,50 @@
 
     <div class="{{ $layout }}">
         @foreach($list as $category => $items)
-            <div class="w-full mb-5">
-                <button type="button" class="{{ config('x-form.checkbox.group.label') }}"
-                        @if($grouped && $toggle) wire:click="{{ "$toggle('$category')" }}" type="button" x-tooltip="{{ __('Select All') }}" @endif
-                >
-                    {{ Str::headline($category) }}
-                </button>
+            <div class="w-full mb-5"
+                 x-data="{
+                    updateHeaderState() {
+                        const checkboxes = Array.from($el.querySelectorAll('input[type=\'checkbox\']:not([data-group-header])'));
+                        const header = $el.querySelector('input[data-group-header]');
+                        if (header && checkboxes.length > 0) {
+                            header.checked = checkboxes.every(cb => cb.checked);
+                        }
+                    },
+                    toggleAll(checked) {
+                        const checkboxes = Array.from($el.querySelectorAll('input[type=\'checkbox\']:not([data-group-header])'));
+                        checkboxes.forEach(cb => {
+                            if (cb.checked !== checked) {
+                                cb.checked = checked;
+                                cb.dispatchEvent(new Event('change', { bubbles: true }));
+                            }
+                        });
+                    }
+                 }"
+                 x-init="updateHeaderState()"
+                 @change="updateHeaderState()"
+            >
+                <div class="flex items-center space-x-2 mb-2">
+                    <input type="checkbox" data-group-header
+                           class="{{ config('x-form.checkbox.input') }}"
+                           id="header-{{ str($category)->slug() }}-{{ $uuid }}"
+                           @if($toggle)
+                               wire:click="{{ "$toggle('$category')" }}"
+                           @else
+                               @change="toggleAll($el.checked)"
+                           @endif
+                    >
+                    <label for="header-{{ str($category)->slug() }}-{{ $uuid }}" class="{{ config('x-form.checkbox.label') }}">
+                        {!! config('x-form.checkbox.icon') !!}
+                    </label>
+
+                    <span class="{{ config('x-form.checkbox.group.label') }} select-none font-bold text-sm">
+                        {{ Str::headline($category) }}
+                    </span>
+                </div>
 
                 <div class="{{ config('x-form.checkbox.vertical') }}">
-                    <div wire:key="{{ $uuid }}">
-                        @if($total == 0)
+                    <div wire:key="{{ $uuid }}-{{ str($category)->slug() }}">
+                        @if(empty($items))
                             <div class="{{ config('x-form.checkbox.empty') }}">
                                 {{ __('0 :results found', ['results' => $label]) }}
                             </div>

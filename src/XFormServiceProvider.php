@@ -8,6 +8,7 @@ use Livewire\Livewire;
 use VkmApps\XForm\Console\Commands\XFormAutoInstaller;
 use VkmApps\XForm\Livewire\FileManager;
 use VkmApps\XForm\View\Components\Form\Checkbox;
+use VkmApps\XForm\View\Components\Form\CheckboxGroup;
 use VkmApps\XForm\View\Components\Form\Date;
 use VkmApps\XForm\View\Components\Form\Disabled;
 use VkmApps\XForm\View\Components\Form\Editor;
@@ -21,6 +22,7 @@ use VkmApps\XForm\View\Components\Form\Password;
 use VkmApps\XForm\View\Components\Form\Radio;
 use VkmApps\XForm\View\Components\Form\Select;
 use VkmApps\XForm\View\Components\Form\Textarea;
+use VkmApps\XForm\View\Components\Form\Money;
 
 class XFormServiceProvider extends ServiceProvider
 {
@@ -66,7 +68,7 @@ class XFormServiceProvider extends ServiceProvider
 
     protected function registerBladeComponents(): void
     {
-        Blade::component('form.checkbox-group', Checkbox::class);
+        Blade::component('form.checkbox-group', CheckboxGroup::class);
         Blade::component('form.checkbox', Checkbox::class);
         Blade::component('form.input', Input::class);
         Blade::component('form.date', Date::class);
@@ -80,6 +82,7 @@ class XFormServiceProvider extends ServiceProvider
         Blade::component('form.file-url', FileUrl::class);
         Blade::component('form.textarea', Textarea::class);
         Blade::component('form.disabled', Disabled::class);
+        Blade::component('form.money', Money::class);
         Blade::component('form.password', Password::class);
     }
 

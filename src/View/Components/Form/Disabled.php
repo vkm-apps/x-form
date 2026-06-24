@@ -6,9 +6,11 @@ use Closure;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use VkmApps\XForm\Traits\HasMoneyFormatting;
 
 class Disabled extends Component
 {
+    use HasMoneyFormatting;
     public function __construct(
         public ?string $label = null,
         public ?string $value = null,
@@ -73,7 +75,8 @@ class Disabled extends Component
 
     private function getCurrencyIcon(): ?string
     {
-        return config("x-form.currency.currency.{$this->currency}", config('x-form.currency.currency.coins'));
+        $locale = app()->getLocale();
+        return $this->resolveMoneyFormat($locale, $this->currency)['symbol'];
     }
 
     /**

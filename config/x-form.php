@@ -56,6 +56,8 @@ $standard_input_classes = implode(' ', [
 ]);
 
 return [
+    'currency' => 'EUR',
+
     'disk' => [
         'name' => env('XFORM_DISK_NAME', 'media'),
         'filesize' => env('XFORM_MAX_FILESIZE'), // Exposed to env variable safely
@@ -101,11 +103,11 @@ return [
     ],
 
     'checkbox' => [
-        'div'           => 'flex items-center space-x-2',
+        'div'           => 'flex items-center space-x-2 my-1',
         'label'         => 'relative w-5 h-5 ' . $base['check_radio'],
         'input'         => 'peer hidden',
         'horizontal'    => $base['choice']['horizontal'],
-        'vertical'      => 'flex flex-col gap-1 mt-1',
+        'vertical'      => 'flex flex-col',
         'empty_message' => 'capitalize text-zinc-500 dark:text-zinc-300',
         'group' => [
             'label' => 'dark:text-zinc-200 font-bold hover:cursor-pointer relative mb-1',
@@ -159,31 +161,5 @@ return [
         'map'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="'.$icon_size.'"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>',
         'info'   => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="'.$icon_size.'"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>',
         'folder' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="'.$icon_size.'"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>',
-    ],
-
-    'currency' => [
-        'currency' => [
-            // Original currencies
-            'EUR' => '&euro;',          // € Euro
-            'USD' => '&#36;',           // $ US Dollar (also used for CAD, AUD, MXN, SGD, etc.)
-            'GBP' => '&pound;',         // £ British Pound
-            'RUB' => '&#8381;',         // ₽ Russian Ruble
-            'JPY' => '&yen;',           // ¥ Japanese Yen / Chinese Yuan
-            'INR' => '&#8377;',         // ₹ Indian Rupee
-            'BTC' => '&#8383;',         // ₿ Bitcoin
-            'XBX' => '&curren;',        // ¤ Generic Currency Sign (Using XBX or 'COINS' depending on your framework)
-
-            //  common currencies
-            'KRW' => '&#8361;',         // ₩ South Korean Won
-            'TRY' => '&#8378;',         // ₺ Turkish Lira
-            'THB' => '&#3647;',         // ฿ Thai Baht
-            'NGN' => '&#8358;',         // ₦ Nigerian Naira
-            'PHP' => '&#8369;',         // ₱ Philippine Peso
-            'CHF' => '&#8355;',         // ₣ Swiss Franc
-            'BRL' => 'R&#36;',          // R$ Brazilian Real
-            'ZAR' => 'R',               // R South African Rand
-            'AED' => '&#1583;.&#1573;', // د.إ UAE Dirham
-            'ILS' => '&#8362;',         // ₪ Israeli New Shekel
-        ],
     ],
 ];
