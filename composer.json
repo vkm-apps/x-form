@@ -1,6 +1,6 @@
 {
     "name": "vkm-apps/x-form",
-    "version": "2.0.5",
+    "version": "2.0.6",
     "description": "Reusable Laravel Blade Form Components using Livewire & AlpineJS.",
     "type": "library",
     "license": "MIT",
