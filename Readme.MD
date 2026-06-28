@@ -1,5 +1,10 @@
 # VKM APPS | X-Form
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/vkm-apps/x-form.svg?style=flat-square)](https://packagist.org/packages/vkm-apps/x-form)
+[![Total Downloads](https://img.shields.io/packagist/dt/vkm-apps/x-form.svg?style=flat-square)](https://packagist.org/packages/vkm-apps/x-form)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+
+
 #### ✨ Supercharge your Laravel form building!
 
 Create beautiful, fully interactive forms in a single line of Blade code. No more repeating boilerplate layouts, validation classes, error handlers, and input styles! 🚀💻
